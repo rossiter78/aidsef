@@ -12,7 +12,7 @@ This repo is the **AIDSEF template repo in progress** (AI-Driven Software Engine
 
 ## Non-negotiable decisions (do not re-litigate)
 - Claude models are used via **subscription only** — never route Claude through LiteLLM, never per-token API keys except as documented escape valves. GitHub Actions use `CLAUDE_CODE_OAUTH_TOKEN`.
-- LiteLLM (on the user's Docker server) routes **only** non-Claude models (Qwen3-Coder / Devstral on the DGX Spark via vLLM; Spark is inference-only).
+- LiteLLM (on the user's Docker server) routes **only** non-Claude models (Qwen3.6-35B-A3B on the DGX Spark via vLLM; Spark is inference-only. See docs/adr/001).
 - Local→cloud Coder escalation always requires **human approval** (`needs-human` issue).
 - Humans never need a terminal; agents do all Git/CLI work.
 - The repo is **open-core public**; keep it client-presentable.

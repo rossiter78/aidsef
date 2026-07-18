@@ -37,7 +37,7 @@ Make the failing tests pass — nothing more, nothing less — then clean up, se
 
 ## Model
 
-Alias `coder` — local open-weight model (Qwen3-Coder 80B class) served by vLLM on the inference host, routed through LiteLLM. Runs as a headless Claude Code invocation with `ANTHROPIC_BASE_URL` pointed at the LiteLLM gateway and `AIDSEF_ROLE=coder` set (the role-separation hooks key off this variable). Escalation alias: `coder-escalated` (Claude, subscription — never through the gateway).
+Alias `coder` — local open-weight model (Qwen3.6-35B-A3B; see ADR-001) served by vLLM on the inference host, routed through LiteLLM. Runs as a headless Claude Code invocation with `ANTHROPIC_BASE_URL` pointed at the LiteLLM gateway and `AIDSEF_ROLE=coder` set (the role-separation hooks key off this variable). Escalation alias: `coder-escalated` (Claude, subscription — never through the gateway).
 
 ## Working rules
 

@@ -29,7 +29,7 @@ Keep the documentation true. After changes merge, update the docs that describe 
 
 ## Model
 
-Alias `docwriter` — local open-weight model (Qwen3-Coder class) served by vLLM, routed through LiteLLM. Runs as a headless Claude Code invocation with `ANTHROPIC_BASE_URL` pointed at the gateway and `AIDSEF_ROLE=doc-writer` set. High-volume work on hardware you own.
+Alias `docwriter` — local open-weight model (Qwen3.6-35B-A3B; see ADR-001) served by vLLM, routed through LiteLLM. Runs as a headless Claude Code invocation with `ANTHROPIC_BASE_URL` pointed at the gateway and `AIDSEF_ROLE=doc-writer` set. High-volume work on hardware you own.
 
 ## Working rules
 

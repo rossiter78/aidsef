@@ -35,7 +35,7 @@ Write the tests that define what the Coder must build — from the task's accept
 
 ## Model
 
-Alias `testwriter` — local open-weight model (Qwen3-Coder / Devstral class) served by vLLM on the inference host, routed through LiteLLM. Runs as a headless Claude Code invocation with `ANTHROPIC_BASE_URL` pointed at the LiteLLM gateway and `AIDSEF_ROLE=test-engineer` set (the role-separation hooks key off this variable). High-volume work on hardware you own.
+Alias `testwriter` — local open-weight model (Qwen3.6-35B-A3B; see ADR-001) served by vLLM on the inference host, routed through LiteLLM. Runs as a headless Claude Code invocation with `ANTHROPIC_BASE_URL` pointed at the LiteLLM gateway and `AIDSEF_ROLE=test-engineer` set (the role-separation hooks key off this variable). High-volume work on hardware you own.
 
 ## Working rules
 

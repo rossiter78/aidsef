@@ -22,7 +22,7 @@ Plus: [Getting started (build order)](docs/00-getting-started.md) · [Glossary](
 | Dimension | Decision |
 |---|---|
 | Backbone | Claude Code orchestrates everything; all process documents are portable markdown |
-| Models | Per-role: Claude (subscription) for the judgment roles — Architect, Reviewer, Arbiter, Analyst, Planner, Retro; open Qwen3-Coder & Devstral (Apache 2.0) on a local DGX Spark via vLLM for the volume roles — Coder, Test Engineer, Doc writer |
+| Models | Per-role: Claude (subscription) for the judgment roles — Architect, Reviewer, Arbiter, Analyst, Planner, Retro; open Qwen3.6-35B-A3B (Apache 2.0) on a local DGX Spark via vLLM for the volume roles — Coder, Test Engineer, Doc writer |
 | Routing | LiteLLM (on a Docker server) routes non-Claude models only — Claude is never metered per token |
 | Gates | Risk-tiered (High/Standard/Low); humans can veto anywhere; branch protection — a GitHub setting that physically blocks merging until required checks pass — enforces it |
 | Tests-first | Enforced by the red-proof CI job + role-separation hooks; 80% / 90% coverage; mutation testing on high-risk changes |
