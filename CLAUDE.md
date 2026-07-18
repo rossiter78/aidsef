@@ -2,6 +2,8 @@
 
 This repo is the **AIDSEF template repo in progress** (AI-Driven Software Engineering Framework). Design is complete; we are now building the framework's own files.
 
+**Every agent, in every session: read [`constitution.md`](constitution.md) before starting any task.** It is the project rulebook — risk tiers, gates, quality thresholds, role separation, and escalation policy all live there. In projects cloned from this template, the ratified constitution is the supreme process authority; this file only points to it.
+
 ## Read before working
 - `README.md` — all core decisions at a glance
 - `docs/00-getting-started.md` — the build order (Phases A–D). **Current status: Phase A not started; all docs rewritten for the two-audience pattern (plain-language main text + "Software Engineering Validation" callouts + `docs/glossary.md`) on 2026-07-18.**
