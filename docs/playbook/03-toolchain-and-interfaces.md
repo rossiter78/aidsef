@@ -78,7 +78,7 @@ aidsef/
 ├── CLAUDE.md                        # points every agent at the constitution
 ├── .claude/
 │   ├── agents/                      # one charter per role
-│   ├── skills/                      # /aidsef:spec, /aidsef:design, /aidsef:build, /aidsef:retro
+│   ├── skills/                      # /aidsef-spec, /aidsef-design, /aidsef-plan, /aidsef-build, /aidsef-retro
 │   └── settings.json                # hooks: TDD enforcement, test-on-edit
 ├── .github/
 │   ├── workflows/ci.yml             # tests + coverage gate
