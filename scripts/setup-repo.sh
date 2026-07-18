@@ -44,15 +44,28 @@ done
 # block; on Free-plan private repos it reports but does not block
 # (playbook §5.3) - the API call still succeeds where the plan allows it.
 echo "Configuring branch protection on main..."
+# The protection API requires real JSON types (booleans/integers/null),
+# which `gh api -f` cannot send (it stringifies everything) - so we PUT
+# an explicit JSON body instead.
 if gh api -X PUT "repos/$REPO/branches/main/protection" \
   -H "Accept: application/vnd.github+json" \
-  -f "required_status_checks[strict]=true" \
-  -f "required_status_checks[checks][][context]=ci" \
-  -f "required_status_checks[checks][][context]=red-proof" \
-  -f "required_status_checks[checks][][context]=claude-review" \
-  -f "enforce_admins=false" \
-  -f "required_pull_request_reviews[required_approving_review_count]=1" \
-  -f "restrictions=" >/dev/null 2>&1; then
+  --input - >/dev/null 2>&1 <<'JSON'; then
+{
+  "required_status_checks": {
+    "strict": true,
+    "checks": [
+      { "context": "ci" },
+      { "context": "red-proof" },
+      { "context": "claude-review" }
+    ]
+  },
+  "enforce_admins": false,
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1
+  },
+  "restrictions": null
+}
+JSON
   echo "  ✓ required checks: ci, red-proof, claude-review; 1 approval required"
 else
   echo "  ! branch protection not applied — expected on GitHub Free-plan PRIVATE repos"
