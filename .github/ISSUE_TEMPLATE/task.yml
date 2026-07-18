@@ -1,0 +1,52 @@
+name: AIDSEF task
+description: A single, testable unit of work — normally created by the Planner during Phase 3, but usable by hand.
+title: "[task] <short description>"
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One task ≈ one branch ≈ one pull request. Keep it small (ideally under ~200 changed lines).
+        Build it with `/aidsef-build <this issue number>`.
+  - type: input
+    id: feature
+    attributes:
+      label: Feature
+      description: Which feature this task belongs to (matches specs/<feature>/).
+      placeholder: login
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria covered
+      description: 'The AC-### IDs from the spec that this task must satisfy. Tests will annotate "Covers: AC-###".'
+      placeholder: |
+        - AC-012
+        - AC-013
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+      description: What must be true for this task to be complete, beyond "the tests pass".
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Proposed risk tier
+      description: Planner-proposed; any human can change the risk label with one click (constitution §3).
+      options:
+        - "risk:low"
+        - "risk:standard"
+        - "risk:high"
+    validations:
+      required: true
+  - type: input
+    id: dependencies
+    attributes:
+      label: Blocked by
+      description: Issue numbers that must land first (leave blank if none).
+      placeholder: "#12, #15"

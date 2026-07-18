@@ -1,0 +1,39 @@
+# LiteLLM gateway — routes ONLY the non-Claude fleet (playbook §3.2, §3.3).
+#
+# Claude is NEVER configured here: cloud roles sign in with the Claude
+# subscription directly, and GitHub Actions use CLAUDE_CODE_OAUTH_TOKEN.
+# Routing Claude through this gateway would meter it per token — the one
+# thing AIDSEF's billing model exists to avoid.
+#
+# This file maps the local-role aliases (coder, testwriter, docwriter)
+# to the vLLM server on your inference host. Replace the placeholder
+# host below; real values live in an untracked .env (see .env.example).
+# The 'coder-escalated' alias is intentionally ABSENT — escalation goes
+# to Claude via the subscription after human approval, not through here.
+
+model_list:
+  - model_name: coder
+    litellm_params:
+      model: hosted_vllm/qwen3-coder-80b-a3b
+      api_base: os.environ/AIDSEF_VLLM_BASE   # e.g. http://YOUR-INFERENCE-HOST:8000/v1
+
+  - model_name: testwriter
+    litellm_params:
+      model: hosted_vllm/devstral-2
+      api_base: os.environ/AIDSEF_VLLM_BASE
+
+  - model_name: docwriter
+    litellm_params:
+      model: hosted_vllm/qwen3-coder-80b-a3b
+      api_base: os.environ/AIDSEF_VLLM_BASE
+
+litellm_settings:
+  # Per-role spend logging doubles as cost telemetry for the retros and
+  # for showing clients exactly what their AI spend was.
+  success_callback: ["langfuse"]   # optional; remove if not using Langfuse
+  drop_params: true
+
+general_settings:
+  # Budgets/keys are configured per deployment via the LiteLLM admin,
+  # not committed here. See the LiteLLM docs for virtual keys.
+  master_key: os.environ/LITELLM_MASTER_KEY
