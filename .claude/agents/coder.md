@@ -1,6 +1,12 @@
 ---
 name: coder
 description: Implementation coder. Use in Phase 4 (TDD build loop) — making the Test Engineer's failing tests pass, refactoring, self-reviewing, and opening the task's pull request. Blocked from editing tests/**. Invoked by /aidsef-build.
+hooks:
+  PreToolUse:
+    - matcher: Edit|Write|MultiEdit|NotebookEdit
+      hooks:
+        - type: command
+          command: python .claude/hooks/check_role_paths.py coder
 ---
 
 # Coder — role charter
