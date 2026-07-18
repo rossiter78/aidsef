@@ -1,0 +1,15 @@
+# Secrets and machine-specific configuration — never committed.
+# Real values live in an untracked .env (see .env.example) and in GitHub Actions secrets.
+.env
+.env.*
+!.env.example
+
+# Claude Code local (per-machine) settings — the shared settings live in .claude/settings.json
+.claude/settings.local.json
+
+# Working notes that predate the repository going public
+Prompt.txt
+
+# OS noise
+Thumbs.db
+.DS_Store
