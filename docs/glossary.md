@@ -14,7 +14,7 @@ A short document recording one significant technical decision: what was decided,
 An AI worker given a specific job, a set of tools, and written limits. AIDSEF uses nine of them (Analyst, Architect, Planner, Test Engineer, Coder, Reviewer, Arbiter, Retro, Doc writer), each defined by a [charter](#charter).
 
 ### Apache 2.0 license
-A permissive open-source license: software under it can be used, modified, and sold commercially for free. The local models AIDSEF uses (Qwen3-Coder, Devstral) carry this license.
+A permissive open-source license: software under it can be used, modified, and sold commercially for free. The local model AIDSEF uses (Qwen3.6) carries this license.
 
 ### API (application programming interface)
 The defined way one piece of software talks to another — its public "sockets." A *public API contract* is a promise other systems depend on, which is why changing one is always high-risk.
@@ -134,7 +134,7 @@ A revocable digital pass that lets software act on an account without holding it
 A business model: the core product is free and public; services and premium modules are paid. AIDSEF's playbook and template are open; pilots, support, and premium modules are the paid layer.
 
 ### Open-weight model
-An AI model whose trained parameters ("weights") are published, so anyone can run it on their own hardware. AIDSEF's Coder (Qwen3-Coder) is open-weight — no vendor can take it away or meter it.
+An AI model whose trained parameters ("weights") are published, so anyone can run it on their own hardware. AIDSEF's Coder (Qwen3.6) is open-weight — no vendor can take it away or meter it.
 
 ### Orchestrator
 The one program that coordinates all the agents, tools, and steps. In AIDSEF that is Claude Code; there is deliberately only one.

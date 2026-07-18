@@ -19,9 +19,10 @@ Build the template repository — the starter kit every AIDSEF project will be c
 
 Stand up the local AI models — the ones that run on your own hardware and cost nothing per use.
 
-1. 👤 On the DGX Spark: run vLLM (the model-serving program) with Qwen3-Coder (and optionally Devstral 2) on port 8000. The Spark serves inference only — nothing else runs on it.
-2. On the Docker server: run the LiteLLM container with `litellm/config.yaml` (aliases `coder`, `testwriter`, `docwriter` → the Spark, over the Tailscale private network). Enable spend logging.
-3. Smoke test — the simplest possible end-to-end check: a headless Claude Code run with `ANTHROPIC_BASE_URL` pointed at LiteLLM; confirm a `coder`-alias request actually lands on the Spark.
+1. 👤 On the DGX Spark: run vLLM (the model-serving program) with Qwen3.6-35B-A3B on port 8000 (see [ADR-001](adr/001-local-model-qwen36-35b-a3b.md) for the model choice). Tool calling — the model's ability to run commands and edit files, which the whole build loop depends on — requires vLLM ≥ 0.19.0 started with `--tool-call-parser qwen3_xml --enable-auto-tool-choice`; without those flags it fails silently. The Spark serves inference only — nothing else runs on it.
+2. Verify the *running server*, not its config files: `GET /v1/models` must list the exact model name `litellm/config.yaml` expects (the `--served-model-name`, not the Hugging Face ID). Config files describe intent; only the live endpoint is fact — during setup we caught a Docker Compose `environment:` block silently overriding the `.env` file.
+3. On the Docker server: run the LiteLLM container with `litellm/config.yaml` (aliases `coder`, `testwriter`, `docwriter` → the Spark, over the Tailscale private network). Enable spend logging.
+4. Smoke test — the simplest possible end-to-end check, in two steps: first a direct tool-calling round-trip against vLLM (confirm the response contains structured `tool_calls`, not tool-call text in the message body); then a headless Claude Code run with `ANTHROPIC_BASE_URL` pointed at LiteLLM, confirming a `coder`-alias request lands on the Spark and its tool calls execute.
 
 ## Phase C — Verify the machinery (1–2 hours)
 

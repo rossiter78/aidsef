@@ -9,7 +9,7 @@ The machines and software involved, and what runs where. Three boxes do the work
 | Component | Runs on | Notes |
 |---|---|---|
 | Claude Code (the [orchestrator](../glossary.md#orchestrator) and your main AI surface) | Windows laptop: VS Code extension + Claude Desktop | Interactive sessions; paid for by subscription, never per-use |
-| [vLLM](../glossary.md#vllm) (the program that serves the local AI models) | **DGX Spark — [inference](../glossary.md#inference) only** | Serves Qwen3-Coder / Devstral on an OpenAI-compatible port; the Spark runs nothing else |
+| [vLLM](../glossary.md#vllm) (the program that serves the local AI models) | **DGX Spark — [inference](../glossary.md#inference) only** | Serves Qwen3.6-35B-A3B on an OpenAI-compatible port; the Spark runs nothing else |
 | [LiteLLM](../glossary.md#litellm) gateway (traffic router for AI requests) | **Dedicated Docker server** (container) | Routes ONLY non-Claude models; keeps the usage/spend records |
 | Headless build-loop runner (autonomy Level 2) | Docker server | Disabled by default; see §4 |
 | [GitHub Actions](../glossary.md#github-actions) (automated checks + AI review + `@claude` fix) | GitHub cloud runners | Claude signs in via `CLAUDE_CODE_OAUTH_TOKEN` (subscription), not a pay-per-use API key |
@@ -22,7 +22,7 @@ Two completely separate payment worlds, kept separate on purpose:
 - **Claude never routes through LiteLLM.** Claude Code signs in with the Claude subscription directly (for interactive sessions) and via `claude setup-token` → a `CLAUDE_CODE_OAUTH_TOKEN` repository secret (for GitHub Actions). Cost: a flat subscription, no per-use meter.
   - Caveat: Actions usage shares the subscription's rate limits with your interactive sessions. Escape valve: put a pay-per-use API key into the review workflow *only*, if that ever becomes necessary.
 - **LiteLLM routes only the non-Claude fleet:** the local models on the Spark, and any future third-party cloud models. LiteLLM's per-role budgets and logging double as cost telemetry — data for retros and for showing clients exactly what their AI spend was.
-- The local models (Qwen3-Coder, Devstral 2) are Apache 2.0 — no licensing cost to run them.
+- The local model (Qwen3.6-35B-A3B; [ADR-001](../adr/001-local-model-qwen36-35b-a3b.md)) is Apache 2.0 — no licensing cost to run it.
 
 > **Software Engineering Validation:** Subscription OAuth for all Claude surfaces (interactive + CI) keeps frontier-model cost flat and predictable; metered API keys exist only as a documented escape valve. LiteLLM provides alias-level routing, budgets, and spend telemetry for the open-weight fleet. This split is a deliberate architectural decision, not an accident of setup.
 
@@ -31,17 +31,17 @@ Two completely separate payment worlds, kept separate on purpose:
 How the pieces talk to each other — four connections, each with a defined contract:
 
 1. **Claude Code ↔ models.** Cloud-role agents name Claude models directly. Local-role agents (coder, testwriter, docwriter) run as [headless](../glossary.md#headless) Claude Code invocations (no visible window) with `ANTHROPIC_BASE_URL` pointed at LiteLLM, which speaks the Anthropic messages format and translates to vLLM.
-2. **LiteLLM ↔ backends.** `litellm/config.yaml` (stored in Git) maps each alias to its endpoint:
+2. **LiteLLM ↔ backends.** `litellm/config.yaml` (stored in Git) maps each alias to its endpoint. The model name must match the vLLM server's `--served-model-name` exactly — verify against the live `/v1/models` endpoint, not a config file:
 
 ```yaml
 model_list:
   - model_name: coder
     litellm_params:
-      model: hosted_vllm/qwen3-coder-80b-a3b
+      model: hosted_vllm/qwen36-35b-a3b-fp8-262k
       api_base: http://spark:8000/v1
   - model_name: testwriter
     litellm_params:
-      model: hosted_vllm/devstral-2
+      model: hosted_vllm/qwen36-35b-a3b-fp8-262k
       api_base: http://spark:8000/v1
   # coder-escalated intentionally ABSENT: escalation goes to Claude via
   # subscription after human approval, not through the gateway

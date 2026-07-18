@@ -31,15 +31,17 @@ Which AI model fills each job. "Frontier cloud" means the most capable (and most
 | Analyst | `analyst` | Frontier-lite cloud | Claude Sonnet 5 | Anthropic API |
 | Architect | `architect` | Frontier cloud | Claude Fable 5 / Opus 4.8 | Anthropic API |
 | Planner | `planner` | Frontier-lite cloud | Claude Sonnet 5 | Anthropic API |
-| Test Engineer | `testwriter` | Local | Qwen3-Coder / Devstral 2 | DGX Spark |
-| Coder | `coder` | Local | Qwen3-Coder 80B-A3B | DGX Spark |
+| Test Engineer | `testwriter` | Local | Qwen3.6-35B-A3B | DGX Spark |
+| Coder | `coder` | Local | Qwen3.6-35B-A3B | DGX Spark |
 | Coder (escalation) | `coder-escalated` | Frontier cloud | Claude Sonnet 5 | Anthropic API |
 | Reviewer | `reviewer` | Frontier cloud | Claude Fable 5 / Opus 4.8 | Anthropic API (GitHub Action) |
 | Arbiter | `arbiter` | Frontier cloud | Claude Fable 5 / Opus 4.8 | Anthropic API |
 | Retro | `retro` | Frontier-lite cloud | Claude Sonnet 5 | Anthropic API |
-| Doc writer | `docwriter` | Local | Qwen3-Coder | DGX Spark |
+| Doc writer | `docwriter` | Local | Qwen3.6-35B-A3B | DGX Spark |
 
-Licensing note: Qwen3-Coder and Devstral 2 are released under the [Apache 2.0 license](../glossary.md#apache-20-license) — free for commercial use, which matters if you resell AIDSEF-built software or the framework itself.
+All three local roles share one model — Qwen3.6-35B-A3B, an agentic-coding release that superseded the originally-planned Qwen3-Coder 80B-A3B (see [ADR-001](../adr/001-local-model-qwen36-35b-a3b.md) for the decision and alternatives, including Devstral 2 as the documented fallback). Because roles are aliases, splitting them across models later is a one-line routing change.
+
+Licensing note: Qwen3.6 (like Qwen3-Coder and Devstral 2 before it) is released under the [Apache 2.0 license](../glossary.md#apache-20-license) — free for commercial use, which matters if you resell AIDSEF-built software or the framework itself.
 
 ## 3. Principles
 

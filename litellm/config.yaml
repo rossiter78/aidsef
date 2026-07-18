@@ -10,21 +10,26 @@
 # host below; real values live in an untracked .env (see .env.example).
 # The 'coder-escalated' alias is intentionally ABSENT — escalation goes
 # to Claude via the subscription after human approval, not through here.
+#
+# All three aliases point at one model (ADR-001). The model name below
+# must match the vLLM server's --served-model-name EXACTLY — that is the
+# only name its API answers to, not the Hugging Face model ID. Verify
+# against the live endpoint: GET <AIDSEF_VLLM_BASE>/models
 
 model_list:
   - model_name: coder
     litellm_params:
-      model: hosted_vllm/qwen3-coder-80b-a3b
+      model: hosted_vllm/qwen36-35b-a3b-fp8-262k
       api_base: os.environ/AIDSEF_VLLM_BASE   # e.g. http://YOUR-INFERENCE-HOST:8000/v1
 
   - model_name: testwriter
     litellm_params:
-      model: hosted_vllm/devstral-2
+      model: hosted_vllm/qwen36-35b-a3b-fp8-262k
       api_base: os.environ/AIDSEF_VLLM_BASE
 
   - model_name: docwriter
     litellm_params:
-      model: hosted_vllm/qwen3-coder-80b-a3b
+      model: hosted_vllm/qwen36-35b-a3b-fp8-262k
       api_base: os.environ/AIDSEF_VLLM_BASE
 
 litellm_settings:
