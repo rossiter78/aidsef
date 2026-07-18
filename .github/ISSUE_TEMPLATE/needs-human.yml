@@ -1,0 +1,42 @@
+name: Needs human
+description: An agent is blocked, uncertain, or has hit the escalation cap and needs a human decision (constitution §1.4, §7.3).
+title: "[needs-human] <what is blocked>"
+labels: ["needs-human"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Agents open this when they must stop and ask rather than guess. A human replies to unblock —
+        for an escalation, `escalate` (re-run on the frontier model) or `re-scope` (Planner splits the task).
+  - type: input
+    id: task
+    attributes:
+      label: Related task / PR
+      description: Issue or pull-request number this concerns.
+      placeholder: "#42"
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of block
+      options:
+        - "Uncertain / needs a decision"
+        - "Escalation — Coder hit the 3-attempt cap"
+        - "Review didn't converge after 2 cycles"
+        - "Role-separation block — a file genuinely needs to change"
+        - "Other"
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What was tried
+      description: For escalations, list the attempts and the diagnosis — is this beyond the local model's ability, or is the task badly specified?
+    validations:
+      required: true
+  - type: textarea
+    id: needed
+    attributes:
+      label: What's needed from the human
+      description: The specific decision or input that will unblock this.
+    validations:
+      required: true

@@ -1,0 +1,5 @@
+# Traceability matrices
+
+**Generated — do not edit by hand.** One file per feature, `<feature>.md`, mapping every acceptance criterion in the spec to the test(s) that prove it.
+
+[`tools/check_traceability.py`](../../tools/check_traceability.py) regenerates these on every pull request (via the `ci` check) and **fails the PR if any criterion is uncovered** — so nothing in a spec silently goes untested (playbook §4.1.3). Tests declare coverage with an annotation line containing `Covers: AC-001`.
