@@ -1,0 +1,54 @@
+# AIDSEF resident runner - autonomy Level 2 (playbook section 3.4).
+# SHIPPED DISABLED. This workflow is scaffolding for the headless
+# build loop that runs on the Docker server's self-hosted runner,
+# picking 'ready' tasks off the queue and parking anything blocked as
+# 'needs-human' - the overnight-factory pattern.
+#
+# It does nothing until BOTH:
+#   1. The repository variable AIDSEF_AUTONOMY_LEVEL is set to '2'
+#      (Settings -> Secrets and variables -> Actions -> Variables) -
+#      which the constitution says requires a human-approved amendment
+#      first (constitution section 6), and
+#   2. A hardened self-hosted runner labeled 'aidsef-resident' exists
+#      (see BACKLOG.md: runner hardening guide precedes any Level 2
+#      enablement - dedicated user, containerized jobs, no fork-PR
+#      execution).
+#
+# Uncomment the schedule trigger only at that point.
+name: resident-build
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 1 * * *'  # overnight run - enable only at Level 2
+
+jobs:
+  resident-build:
+    name: resident-build
+    if: vars.AIDSEF_AUTONOMY_LEVEL == '2'
+    runs-on: [self-hosted, aidsef-resident]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard - never run on forks or from fork PRs
+        run: |
+          if [[ "${{ github.repository }}" != "${{ github.event.repository.full_name }}" ]]; then
+            echo "Refusing to run outside the home repository." >&2
+            exit 1
+          fi
+
+      - name: Process the ready queue (headless build loop)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # One task per run, oldest ready first; everything blocked is
+          # queueable by design - the run never waits on a human, it parks.
+          ISSUE="$(gh issue list --label ready --state open --json number --jq 'sort_by(.number) | .[0].number' || true)"
+          if [[ -z "$ISSUE" || "$ISSUE" == "null" ]]; then
+            echo "No ready tasks - nothing to do."
+            exit 0
+          fi
+          echo "Building task #$ISSUE via /aidsef-build (headless)..."
+          claude -p "/aidsef-build $ISSUE" --permission-mode acceptEdits

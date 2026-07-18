@@ -1,0 +1,53 @@
+# AIDSEF AI reviewer (playbook sections 2.5 and 4.2): every pull
+# request is reviewed against the constitution, spec, and design by a
+# frontier Claude model - a different model family than the local
+# Coder, on purpose (cross-model review).
+#
+# Auth: CLAUDE_CODE_OAUTH_TOKEN repository secret - the Claude
+# subscription's OAuth token from `claude setup-token`. Never a
+# metered API key (that escape valve is documented in playbook 3.2).
+name: claude-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  claude-review:
+    name: claude-review
+    if: '!github.event.pull_request.draft'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: AI review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You are the AIDSEF Reviewer. Your charter is .claude/agents/reviewer.md and the
+            project rulebook is constitution.md - read both first, then review PR #${{ github.event.pull_request.number }}.
+
+            Review the pull request diff against the constitution, the feature's spec and
+            design under specs/, and any relevant ADRs under docs/adr/.
+
+            Produce STRUCTURED FINDINGS ONLY, as one PR review comment, each finding in the shape:
+              { category, severity, file:line, summary, concrete failure scenario }
+            Categories: correctness, security, design-drift, test-quality, simplicity, docs.
+            Watch specifically for design-drift (implementation quietly diverging from
+            design.md/ADRs) and vacuous tests (assertions that cannot fail, over-mocked
+            tests). Every finding needs a concrete failure scenario a non-engineer can
+            follow. If the PR is clean, say explicitly that you reviewed it and found
+            nothing - silence is not approval.
+
+            Do not reclassify or fix anything - triage belongs to the Arbiter, and humans
+            outrank everyone.
+          claude_args: '--allowed-tools "Read,Grep,Glob,Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'

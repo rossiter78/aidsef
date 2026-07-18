@@ -1,0 +1,49 @@
+# AIDSEF CI: tests + coverage gates + traceability (playbook section 4).
+# The single required check named 'ci' that branch protection demands.
+#
+# Language-agnostic by contract: a cloned project defines its own
+# scripts/test.sh and scripts/coverage.sh (see scripts/README.md).
+# Until those exist (e.g. in this template repo itself), the missing
+# steps report and pass - the traceability check always runs.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tests
+        run: |
+          if [[ -f scripts/test.sh ]]; then
+            bash scripts/test.sh
+          else
+            echo "No scripts/test.sh - test suite not configured yet (template state). Skipping."
+          fi
+
+      - name: Coverage gates (80% project / 90% changed lines)
+        run: |
+          if [[ -f scripts/coverage.sh ]]; then
+            bash scripts/coverage.sh "${{ github.event.pull_request.base.sha || github.event.before }}"
+          else
+            echo "No scripts/coverage.sh - coverage gate not configured yet (template state). Skipping."
+          fi
+
+      - name: Traceability matrix (every acceptance criterion covered by a test)
+        run: python3 tools/check_traceability.py
+
+      - name: Upload generated traceability matrices
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traceability
+          path: docs/traceability/
+          if-no-files-found: ignore
