@@ -9,7 +9,7 @@ Build the template repository — the starter kit every AIDSEF project will be c
 1. 👤 Create the GitHub repository `aidsef` (public — open-core) and connect this directory to it (`git init`).
 2. Write `constitution.md` — the project rulebook — from playbook §1 defaults (risk tiers, gate policy, coverage 80/90, autonomy level 0, solo profile).
 3. Write the 9 role charters (agent job descriptions) in `.claude/agents/` from playbook §2: mission, inputs, outputs, hard limits, model alias.
-4. Write the skills — reusable commands that drive each lifecycle phase: `/aidsef:spec`, `/aidsef:design`, `/aidsef:plan`, `/aidsef:build`, `/aidsef:retro` — each using the matching charter.
+4. Write the skills — reusable commands that drive each lifecycle phase: `/aidsef-spec`, `/aidsef-design`, `/aidsef-plan`, `/aidsef-build`, `/aidsef-retro` — each using the matching charter. (Hyphenated, not colon-namespaced: in Claude Code, a project skill's command name comes from its directory name, and colons are reserved for plugin namespaces.)
 5. Write the hooks (rules that physically block agents from forbidden edits) in `.claude/settings.json`: Coder blocked from `tests/**`, Test Engineer blocked from `src/**`, tests auto-run after edits.
 6. Write the automated workflows: `ci.yml` (tests + coverage + traceability check), `red-proof.yml`, `claude-review.yml`, `claude-fix.yml`, `resident-*.yml` (shipped disabled).
 7. Write the issue/PR templates and a `setup-repo` script (labels: `risk:*`, `needs-human`, `ready`; branch protection; Projects board).
@@ -39,8 +39,8 @@ Use AIDSEF to build something real — "dogfooding" means using your own product
 
 1. 👤 Pick a small real app you actually want (internal-tool-sized; it doubles as your first case study).
 2. Clone the template into a new repository; ratify its constitution (5 minutes solo).
-3. Run the full lifecycle at **autonomy Level 0** — watch everything: `/aidsef:spec` conversation → approve the spec PR → `/aidsef:design` → approve → `/aidsef:plan` → `/aidsef:build` task by task → review/triage → merge.
-4. After the first feature: run `/aidsef:retro`; approve (or reject) its first amendment PR.
+3. Run the full lifecycle at **autonomy Level 0** — watch everything: `/aidsef-spec` conversation → approve the spec PR → `/aidsef-design` → approve → `/aidsef-plan` → `/aidsef-build` task by task → review/triage → merge.
+4. After the first feature: run `/aidsef-retro`; approve (or reject) its first amendment PR.
 5. Weeks 2–3: move to Level 1 (attended). Level 2 (resident, on the Docker server) only when the retros say the loop has earned it.
 
 ## Trust milestones (when to turn the autonomy dial)
