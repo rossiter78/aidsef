@@ -1,0 +1,39 @@
+# AIDSEF red proof (playbook section 4.1.1): mechanical, re-runnable
+# evidence that tests came first - the required check named 'red-proof'.
+#
+#   1. The PR's new/changed tests must FAIL on the base code (red).
+#   2. The same tests must PASS on the head code (green).
+#   3. Implementation changes with no test changes fail outright.
+#   4. Modified pre-existing tests (append-only rule) flag the PR
+#      'needs-human' for mandatory human review.
+name: red-proof
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write # to apply the needs-human label on append-only violations
+
+jobs:
+  red-proof:
+    name: red-proof
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Run the red proof
+        id: redproof
+        run: bash tools/red_proof.sh "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}"
+
+      - name: Flag modified pre-existing tests for human review
+        if: steps.redproof.outputs.REDPROOF_TESTS_MODIFIED == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr edit "${{ github.event.pull_request.number }}" --add-label needs-human --repo "${{ github.repository }}"
+          gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body \
+            "**Red proof notice:** this PR modifies pre-existing test files. Test files are append-only after a task's first commit (playbook 4.1.2), so a human must review the test changes. Labeled \`needs-human\`."

@@ -10,6 +10,13 @@
 # Working notes that predate the repository going public
 Prompt.txt
 
+# Build/interpreter noise
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
 # OS noise
 Thumbs.db
 .DS_Store
