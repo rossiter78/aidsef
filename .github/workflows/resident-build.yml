@@ -12,7 +12,10 @@
 #   2. A hardened self-hosted runner labeled 'aidsef-resident' exists
 #      (see BACKLOG.md: runner hardening guide precedes any Level 2
 #      enablement - dedicated user, containerized jobs, no fork-PR
-#      execution).
+#      execution). That runner must be version 2.327.1 or newer - the
+#      actions/* steps below run on Node.js 24 and older runners cannot
+#      execute them. GitHub-hosted runners (every other workflow here)
+#      are updated automatically and need nothing.
 #
 # Uncomment the schedule trigger only at that point.
 name: resident-build
@@ -28,7 +31,7 @@ jobs:
     if: vars.AIDSEF_AUTONOMY_LEVEL == '2'
     runs-on: [self-hosted, aidsef-resident]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
