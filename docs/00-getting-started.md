@@ -21,8 +21,21 @@ Stand up the local AI models — the ones that run on your own hardware and cost
 
 1. 👤 On the DGX Spark: run vLLM (the model-serving program) with Qwen3.6-35B-A3B on port 8000 (see [ADR-001](adr/001-local-model-qwen36-35b-a3b.md) for the model choice). Tool calling — the model's ability to run commands and edit files, which the whole build loop depends on — requires vLLM ≥ 0.19.0 started with `--tool-call-parser qwen3_xml --enable-auto-tool-choice`; without those flags it fails silently. The Spark serves inference only — nothing else runs on it.
 2. Verify the *running server*, not its config files: `GET /v1/models` must list the exact model name `litellm/config.yaml` expects (the `--served-model-name`, not the Hugging Face ID). Config files describe intent; only the live endpoint is fact — during setup we caught a Docker Compose `environment:` block silently overriding the `.env` file.
-3. On the Docker server: run the LiteLLM container with `litellm/config.yaml` (aliases `coder`, `testwriter`, `docwriter` → the Spark, over the Tailscale private network). Enable spend logging.
-4. Smoke test — the simplest possible end-to-end check, in two steps: first a direct tool-calling round-trip against vLLM (confirm the response contains structured `tool_calls`, not tool-call text in the message body); then a headless Claude Code run with `ANTHROPIC_BASE_URL` pointed at LiteLLM, confirming a `coder`-alias request lands on the Spark and its tool calls execute.
+3. 👤 On the Docker server: deploy the LiteLLM gateway — `docker compose up -d` in `litellm/`, which pulls the official image and mounts `litellm/config.yaml`. Full instructions in [`litellm/README.md`](../litellm/README.md). Confirm `GET /v1/models` on the gateway lists all three aliases (`coder`, `testwriter`, `docwriter`) before going further.
+
+### The smoke test
+
+The build loop rests entirely on **tool calling** — the model's ability to read files, edit them, and run commands. That capability crosses two translation boundaries (Claude Code's Anthropic format → LiteLLM → vLLM's OpenAI format), and the known failure mode is silent: the model emits its tool call as ordinary text and nothing errors, it just doesn't *do* anything. Test it deliberately, in three stages:
+
+1. **vLLM alone.** Send a request directly to the Spark that cannot be answered without a tool. The reply must contain a structured `tool_calls` field. If the tool call appears as text inside the message body instead, the `--tool-call-parser` flag isn't working — fix that before anything else.
+2. **The gateway handshake.** Point `ANTHROPIC_BASE_URL` at LiteLLM and start Claude Code. It calls `GET /v1/models` on startup and lists what it finds in its model picker, labelled "From gateway" — a free check that the two ends agree before you send real work.
+3. **The full chain, ten times.** Run a headless Claude Code invocation against a task that *forces* tool use — "read this file, change this line, run the tests" — and confirm the edit actually happened on disk. Then **run it ten times and count the failures.** The known instability is intermittent, not absolute: a single pass proves the path exists, not that it's reliable enough to trust unattended. Ten clean runs is the result you want written down before the Coder gets real tasks.
+
+> A test the model can pass without calling a tool proves nothing — it just doesn't exercise the thing being tested. Make the task impossible to complete without touching a file.
+
+If failures appear, check the response body for tool-call syntax sitting in the message text: that fingerprint means the parser or the format translation is at fault, not the model's ability.
+
+The first thing to try is turning off the model's **"thinking" output** — the private reasoning some models emit before their real answer. It is a plausible culprit because that extra text has to survive the same translation as the tool call. On the Spark, this is the `PRESERVE_THINKING` setting in the vLLM host's `.env` (set it to `0`, recreate the container, re-run the ten). If the failures persist, the documented fallback is a different local model ([ADR-001](adr/001-local-model-qwen36-35b-a3b.md)).
 
 ## Phase C — Verify the machinery (1–2 hours)
 

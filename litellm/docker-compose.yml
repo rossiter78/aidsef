@@ -1,0 +1,39 @@
+# LiteLLM gateway — deploy on the Docker server (AIDSEF Phase B).
+#
+# The image is PULLED, not built: LiteLLM publishes an official one.
+# The only thing this repo supplies is config.yaml, mounted read-only.
+#
+#   1. Copy this directory (or clone the repo) onto the Docker server
+#   2. Create ../.env from ../.env.example and fill in real values
+#   3. docker compose up -d
+#
+# Deliberately NO 'environment:' block. Compose's environment: silently
+# overrides env_file:, which cost us a debugging session on the vLLM host
+# (ADR-001). One source of truth: ../.env.
+
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-stable
+    container_name: aidsef-litellm
+    restart: unless-stopped
+    ports:
+      # Bind address is deliberate. A bare "4000:4000" publishes the gateway
+      # on EVERY interface of this host — including a public one, if it has
+      # any — leaving only the master key between the internet and your model
+      # fleet. The default below is loopback-only (safe, but unreachable from
+      # your laptop); set LITELLM_BIND_ADDR in .env to this host's Tailscale
+      # address so the private mesh, and only the mesh, can reach it.
+      # Requires --env-file ../.env so Compose can substitute it (see README).
+      - "${LITELLM_BIND_ADDR:-127.0.0.1}:4000:4000"
+    env_file:
+      - ../.env
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    healthcheck:
+      # Uses python (certain to exist in this image) rather than curl (may not).
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://localhost:4000/health/liveliness')\""]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
