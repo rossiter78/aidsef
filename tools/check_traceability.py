@@ -16,6 +16,14 @@ Nothing in a spec is allowed to silently go untested:
 Run locally (python tools/check_traceability.py) or in CI, from the
 repository root. No third-party dependencies.
 
+With --require-specs, an empty specs/*/spec.md glob is a FAILURE
+instead of a pass. CI sets the flag when a pull request changes
+product code (src/**) - a Feature/Fix-class change (constitution
+3.1) must have a spec with AC IDs, or the gate would be a silent
+no-op for exactly the changes it most needs to guard (issue #12).
+Without the flag (chore PRs, fresh clones, local runs), an empty
+glob still passes.
+
 Note: criterion IDs are matched globally, so keep them unique across
 features (continue numbering rather than restarting at AC-001 per
 feature, or prefix: LOGIN-AC-001).
@@ -61,9 +69,23 @@ def coverage_map():
     return covered
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    args = sys.argv[1:] if argv is None else argv
+    require_specs = "--require-specs" in args
+
     specs = sorted(Path(".").glob(SPEC_GLOB))
     if not specs:
+        if require_specs:
+            print(
+                "Traceability FAILED: product code changed (Feature/Fix class) "
+                "but no specs/*/spec.md exists.\n"
+                "Every requirement must be phrased testably with an AC ID before "
+                "product code is written (constitution core rule 2). "
+                "Write the spec first - or, if this is genuinely not feature/fix "
+                "work, it should not be touching src/.",
+                file=sys.stderr,
+            )
+            return 1
         print("Traceability: no specs found - nothing to check (pass).")
         return 0
 

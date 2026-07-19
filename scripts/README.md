@@ -1,6 +1,6 @@
 # Scripts — the project's command contract
 
-CI, the hooks, and the red proof are language-agnostic: they call these scripts instead of assuming a language. **A project cloned from this template defines them for its stack during setup** (the template itself ships without `test.sh`/`coverage.sh`, so those checks report "not configured" and pass).
+CI, the hooks, and the red proof are language-agnostic: they call these scripts instead of assuming a language. **A project cloned from this template replaces them for its stack during setup.** The template ships a `test.sh` that runs its own tooling tests (`tests/`, standard-library Python only) — replace it, keeping the contract below. `coverage.sh` is not shipped, so that check reports "not configured" and passes until the cloned project defines it.
 
 | Script | Contract |
 |---|---|

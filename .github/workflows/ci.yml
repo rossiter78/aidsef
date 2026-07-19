@@ -46,7 +46,18 @@ jobs:
           fi
 
       - name: Traceability matrix (every acceptance criterion covered by a test)
-        run: python3 tools/check_traceability.py
+        # Fail closed for Feature/Fix-class changes (issue #12): if the
+        # diff touches product code (src/**), a spec with AC IDs must
+        # exist. Chore/docs diffs keep the pass-on-empty behavior.
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
+          REQUIRE=()
+          if [[ -n "$BASE" ]] && git rev-parse -q --verify "$BASE^{commit}" >/dev/null 2>&1; then
+            if git diff --name-only "$(git merge-base "$BASE" HEAD)" HEAD | grep -qE '^src/'; then
+              REQUIRE=(--require-specs)
+            fi
+          fi
+          python3 tools/check_traceability.py ${REQUIRE[@]+"${REQUIRE[@]}"}
 
       - name: Upload generated traceability matrices
         if: always()
