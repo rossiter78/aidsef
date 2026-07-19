@@ -4,6 +4,8 @@ A framework for building software with AI agents **responsibly**: the AI does th
 
 You don't need to be a software engineer to use AIDSEF. You will, as a side effect, learn how disciplined software engineering actually works — every technical term in these docs is defined in plain language in the [glossary](docs/glossary.md), and each doc carries **Software Engineering Validation** callouts where professional engineers can verify the rigor in their own vocabulary.
 
+These ideas aren't ours alone. Google's May 2026 whitepaper [*The New SDLC with Vibe Coding*](https://www.kaggle.com/whitepaper-the-new-SDLC-with-vibe-coding) (Osmani, Saboo & Kartakis) independently reaches the same conclusion AIDSEF is built on: AI-built software you can depend on comes from the structure, verification, and human judgment *around* the AI — a discipline it names [agentic engineering](docs/glossary.md#agentic-engineering). AIDSEF both validates and extends that blueprint: where the paper prescribes principles, this repository ships the enforcing machinery (see the [skeptic's brief](docs/playbook/06-commercialization.md#3-the-skeptics-brief)).
+
 **Status:** setup phases A–C complete (2026-07-19). The scaffold is built, the local model plane is live (tool-calling smoke test: 10/10 clean runs), and the guardrails survived deliberate attack on the [machinery test bench](https://github.com/rossiter78/aidsef-scratch) — including the reviewer catching a real defect in the template's own traceability gate ([#12](https://github.com/rossiter78/aidsef/issues/12)). Next: Phase D, the first dogfood project.
 
 ## The playbook
