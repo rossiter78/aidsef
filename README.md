@@ -4,7 +4,7 @@ A framework for building software with AI agents **responsibly**: the AI does th
 
 You don't need to be a software engineer to use AIDSEF. You will, as a side effect, learn how disciplined software engineering actually works — every technical term in these docs is defined in plain language in the [glossary](docs/glossary.md), and each doc carries **Software Engineering Validation** callouts where professional engineers can verify the rigor in their own vocabulary.
 
-**Status:** design complete (2026-07-18); template repo build-out in progress.
+**Status:** setup phases A–C complete (2026-07-19). The scaffold is built, the local model plane is live (tool-calling smoke test: 10/10 clean runs), and the guardrails survived deliberate attack on the [machinery test bench](https://github.com/rossiter78/aidsef-scratch) — including the reviewer catching a real defect in the template's own traceability gate ([#12](https://github.com/rossiter78/aidsef/issues/12)). Next: Phase D, the first dogfood project.
 
 ## The playbook
 
