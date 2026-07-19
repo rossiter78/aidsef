@@ -86,7 +86,8 @@ aidsef/
 │   ├── workflows/claude-fix.yml     # @claude mention → fix iteration
 │   ├── workflows/resident-*.yml     # Level 2 runner workflows (disabled by default)
 │   └── ISSUE_TEMPLATE/              # task template: acceptance criteria + risk tier
-├── litellm/config.yaml              # non-Claude aliases only
+├── litellm/                         # gateway: config.yaml (non-Claude aliases
+│                                    # only), docker-compose.yml, README
 ├── specs/   docs/adr/   retros/
 └── docs/playbook/                   # these six sections
 ```
