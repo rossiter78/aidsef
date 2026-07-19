@@ -10,3 +10,5 @@ Enhancements deliberately deferred from v1. Each becomes a GitHub issue when the
 - **Hermes skill-distillation → retro loop** — feed Hermes-style learned skills into agent charters (v2 of the retrospective system).
 - **Multi-vendor cloud demo** — repoint one role to a non-Anthropic cloud model as a vendor-independence demonstration for sales.
 - **Nightly full-codebase mutation runs** — beyond high-risk-PR mutation checks; results feed retros.
+- **Evals for non-deterministic components** — when a project's *product* includes an LLM feature, tests alone can't verify it: add an eval lane (labelled datasets, scoring rubrics, LM-judge checks in CI) alongside the test gates. Flagged by Google's [SDLC whitepaper](https://www.kaggle.com/whitepaper-the-new-SDLC-with-vibe-coding): without both tests *and* evals, it's still vibe coding. Needed before any dogfood project ships an AI feature.
+- **First-pass success rate metric** — add "PRs merged with zero review-finding cycles" to the playbook §6.4 proof metrics; it directly demonstrates harness ROI (better context → first-try success) in client readouts.
