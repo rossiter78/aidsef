@@ -6,7 +6,7 @@ This repo is the **AIDSEF template repo in progress** (AI-Driven Software Engine
 
 ## Read before working
 - `README.md` — all core decisions at a glance
-- `docs/00-getting-started.md` — the build order (Phases A–D). **Current status: Phase A not started; all docs rewritten for the two-audience pattern (plain-language main text + "Software Engineering Validation" callouts + `docs/glossary.md`) on 2026-07-18.**
+- `docs/00-getting-started.md` — the build order (Phases A–D). **Current status: Phases A–C complete (2026-07-19) — repo scaffold, local model plane (3-stage smoke test 10/10), and machinery verification (all 3 acceptance tests, on the [aidsef-scratch](https://github.com/rossiter78/aidsef-scratch) bench) all pass. Phase D (dogfood project #1) not started.** All docs use the two-audience pattern (plain-language main text + "Software Engineering Validation" callouts + `docs/glossary.md`).
 - `docs/playbook/01–06` — the authoritative design. When building any file, the matching playbook section is the spec:
   - Constitution → playbook 01 · Role charters → playbook 02 · LiteLLM config & workflows wiring → playbook 03 · Hooks, red-proof, CI → playbook 04 · Templates/labels/board → playbook 05 · License/open-core choices → playbook 06
 
