@@ -52,10 +52,12 @@ Before trusting the guardrails, deliberately try to break them (in a scratch rep
 Use AIDSEF to build something real — "dogfooding" means using your own product for your own needs.
 
 1. 👤 Pick a small real app you actually want (internal-tool-sized; it doubles as your first case study).
-2. Clone the template into a new repository; ratify its constitution (5 minutes solo).
-3. Run the full lifecycle at **autonomy Level 0** — watch everything: `/aidsef-spec` conversation → approve the spec PR → `/aidsef-design` → approve → `/aidsef-plan` → `/aidsef-build` task by task → review/triage → merge.
-4. After the first feature: run `/aidsef-retro`; approve (or reject) its first amendment PR.
-5. Weeks 2–3: move to Level 1 (attended). Level 2 (resident, on the Docker server) only when the retros say the loop has earned it.
+2. Create your project's repository **from the template button**: on the [aidsef repo page](https://github.com/rossiter78/aidsef), click **Use this template → Create a new repository**, name it after your project, and choose Private or Public (private on a Free plan makes the merge gates advisory rather than physically blocking — see playbook §5.3). This copies the files into a brand-new repository with a fresh history and **no link back to the template** — do *not* `git clone` the template directly, which would drag along AIDSEF's own history and remote.
+3. Trim the framework-authoring files that don't belong in a project: delete `docs/playbook/`, `docs/00-getting-started.md`, and `BACKLOG.md` (start your own); **replace `README.md` and `CLAUDE.md` with your project's own** — the template's `CLAUDE.md` describes building AIDSEF itself and would misdirect your agents (a project `CLAUDE.md` needs little more than "read `constitution.md` before any task" plus your project's specifics). Keep everything else: `constitution.md`, `.claude/`, `.github/`, `docs/glossary.md`, `docs/adr/`, `scripts/`, `tools/`, `specs/`, `retros/`.
+4. Ratify the constitution (5 minutes solo).
+5. Run the full lifecycle at **autonomy Level 0** — watch everything: `/aidsef-spec` conversation → approve the spec PR → `/aidsef-design` → approve → `/aidsef-plan` → `/aidsef-build` task by task → review/triage → merge.
+6. After the first feature: run `/aidsef-retro`; approve (or reject) its first amendment PR.
+7. Weeks 2–3: move to Level 1 (attended). Level 2 (resident, on the Docker server) only when the retros say the loop has earned it.
 
 ## Trust milestones (when to turn the autonomy dial)
 
