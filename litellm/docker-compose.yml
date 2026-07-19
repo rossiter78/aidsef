@@ -17,7 +17,14 @@ services:
     container_name: aidsef-litellm
     restart: unless-stopped
     ports:
-      - "4000:4000"
+      # Bind address is deliberate. A bare "4000:4000" publishes the gateway
+      # on EVERY interface of this host — including a public one, if it has
+      # any — leaving only the master key between the internet and your model
+      # fleet. The default below is loopback-only (safe, but unreachable from
+      # your laptop); set LITELLM_BIND_ADDR in .env to this host's Tailscale
+      # address so the private mesh, and only the mesh, can reach it.
+      # Requires --env-file ../.env so Compose can substitute it (see README).
+      - "${LITELLM_BIND_ADDR:-127.0.0.1}:4000:4000"
     env_file:
       - ../.env
     volumes:

@@ -33,7 +33,9 @@ The build loop rests entirely on **tool calling** — the model's ability to rea
 
 > A test the model can pass without calling a tool proves nothing — it just doesn't exercise the thing being tested. Make the task impossible to complete without touching a file.
 
-If failures appear, check the response body for tool-call syntax sitting in the message text: that fingerprint means the parser or the format translation is at fault, not the model's ability. The first knob to try is `PRESERVE_THINKING` on the vLLM host (turn it off, re-run the ten); the documented fallback if it stays unreliable is a different local model ([ADR-001](adr/001-local-model-qwen36-35b-a3b.md)).
+If failures appear, check the response body for tool-call syntax sitting in the message text: that fingerprint means the parser or the format translation is at fault, not the model's ability.
+
+The first thing to try is turning off the model's **"thinking" output** — the private reasoning some models emit before their real answer. It is a plausible culprit because that extra text has to survive the same translation as the tool call. On the Spark, this is the `PRESERVE_THINKING` setting in the vLLM host's `.env` (set it to `0`, recreate the container, re-run the ten). If the failures persist, the documented fallback is a different local model ([ADR-001](adr/001-local-model-qwen36-35b-a3b.md)).
 
 ## Phase C — Verify the machinery (1–2 hours)
 

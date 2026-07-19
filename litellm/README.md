@@ -20,19 +20,30 @@ cd aidsef
 cp .env.example .env
 ```
 
-Edit `.env` and set three values:
+Edit `.env` and set four values:
 
 - `AIDSEF_VLLM_BASE` — your inference host, e.g. `http://spark-hostname:8000/v1` (the `/v1` suffix matters)
 - `LITELLM_MASTER_KEY` — generate a random secret, e.g. `openssl rand -hex 24`, prefixed `sk-`
 - `AIDSEF_LITELLM_URL` — this server's own address, e.g. `http://docker-hostname:4000` (used by the agents, not by the gateway itself)
+- `LITELLM_BIND_ADDR` — **which network interface the gateway listens on.** Set this to *this machine's* [Tailscale](../docs/glossary.md#tailscale) address (`tailscale ip -4` prints it). See the warning below before changing it.
 
 Then start it:
 
 ```bash
 cd litellm
-docker compose up -d
-docker compose logs -f      # watch for "Uvicorn running on ..."
+docker compose --env-file ../.env up -d
+docker compose --env-file ../.env logs -f    # watch for "Uvicorn running on ..."
 ```
+
+`--env-file ../.env` is required: Docker Compose reads variables for its *own* substitution (like `LITELLM_BIND_ADDR`) from the directory it runs in, which is not where this repo keeps `.env`.
+
+## ⚠️ Do not expose this gateway
+
+Anyone who can reach port 4000 and holds the master key can use your entire model fleet. The design ([playbook §3.1](../docs/playbook/03-toolchain-and-interfaces.md)) assumes the gateway is reachable **only over the Tailscale private mesh** — so bind it to the Tailscale interface and nothing else.
+
+The default in `docker-compose.yml` is `127.0.0.1`, which is safe but means only the Docker server itself can reach the gateway — your laptop can't. Setting `LITELLM_BIND_ADDR` to the host's Tailscale address fixes that while keeping the port off every other interface.
+
+**Never set it to `0.0.0.0`.** That publishes the gateway on every interface the machine has, including a public one if it has any, and the `/health/liveliness` endpoint answers without authentication — enough for a scanner to confirm something is listening. If this host is a cloud VM or sits behind a router with port forwarding or UPnP, a bare bind is an open door.
 
 ## Verify before trusting it
 
