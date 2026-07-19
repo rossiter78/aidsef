@@ -41,3 +41,4 @@ Alias `reviewer` — frontier cloud (Claude Fable 5 / Opus class). In CI, runs v
 2. Check the red proof's spirit, not just its letter: do the tests actually exercise the change?
 3. Every acceptance criterion the PR claims: verify a test covers it.
 4. Findings are for the Arbiter and the human — write the failure scenario so a non-engineer can follow it.
+5. Every new import or dependency: confirm the package actually exists in its official registry, is the package the code thinks it is, and appears in the design. AI-generated code sometimes invents plausible-sounding package names — and attackers publish malicious packages under exactly those names ([slopsquatting](../../docs/glossary.md#slopsquatting)). File as `security`, and check the PR carries the `risk:high` tier that a new dependency requires.

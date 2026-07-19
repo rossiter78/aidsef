@@ -17,6 +17,14 @@ jobs:
     name: ci
     runs-on: ubuntu-latest
     steps:
+      # Spike lane (constitution 3.1): spike/* branches are throwaway
+      # experiments and may never merge. Fail their PRs before anything runs.
+      - name: Spike-lane guard (spike/* branches never merge)
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'spike/')
+        run: |
+          echo "::error::This PR comes from a spike/* branch. Spikes are throwaway experiments (constitution 3.1) and never merge - rebuild anything worth keeping through the normal lifecycle."
+          exit 1
+
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0

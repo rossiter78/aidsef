@@ -48,6 +48,7 @@ Every change gets a [risk tier](docs/glossary.md#risk-tier) [label](docs/glossar
 - **Feature** — building something new. Full lifecycle (Phases 1–6).
 - **Fix** — repairing something broken. Abbreviated path: reproduce the bug with a failing test → fix → review → merge. Links back to the spec it corrects; no new spec.
 - **Chore** — housekeeping (dependencies, docs, tooling). Skips Phases 1–3.
+- **[Spike](docs/glossary.md#spike)** — a sanctioned throwaway experiment: exploring an idea, a library, or a design question where the goal is learning, not shipping. Spikes live on `spike/*` [branches](docs/glossary.md#branch), skip every gate and every test requirement — and in exchange **can never merge**: the `ci` required check automatically fails any pull request from a `spike/*` branch. What a spike learns is written down (in its issue, a spec draft, or an ADR); anything worth keeping is rebuilt through the normal lifecycle. Spikes carry no risk tier — the tier system governs what merges, and spikes don't.
 
 ### 3.2 Tier triggers (any one is enough)
 
@@ -108,7 +109,7 @@ When the local Coder can't get the tests passing after **3 attempts**, it stops 
 
 ## 8. Amendments
 
-- Any change to this constitution or to a role charter arrives as a pull request. **Amendment PRs are always human-approved** — no exceptions, at any autonomy level.
+- Any change to this constitution, to a role charter, **or to the enforcement machinery itself** — the [hooks](docs/glossary.md#hook) and settings in `.claude/`, the skills, and the [workflows](docs/glossary.md#workflow) in `.github/workflows/` — arrives as a pull request. **Amendment PRs are always human-approved** — no exceptions, at any autonomy level. An agent must never be able to loosen its own guardrails without a human's yes.
 - The Retro agent proposes amendments when it spots recurring patterns; humans can propose them any time.
 - An amendment takes effect when its PR merges. Agents always read the merged version.
 
