@@ -55,6 +55,8 @@ When an engineer asks "why should I trust software built this way?", the answer 
 
 Closing argument: the red proof, live traceability, and reviewing 100% of pull requests are practices human teams *claim* but rarely sustain — because they're tedious. AIDSEF sustains them because agents don't get bored. **The framework is more disciplined than most human teams — provably.**
 
+**Independent validation:** Google's May 2026 whitepaper [*The New SDLC with Vibe Coding*](https://www.kaggle.com/whitepaper-the-new-SDLC-with-vibe-coding) (Osmani, Saboo & Kartakis) draws the same line AIDSEF is built on: the difference between casual vibe coding and what it calls [agentic engineering](../glossary.md#agentic-engineering) is not which AI you use, but how much structure, verification, and human judgment surrounds the AI's output. Its verdict — "structure scales, vibes don't" — and its finding that most agent failures trace back to the surrounding scaffolding rather than the model are AIDSEF's pitch, stated in an independent, Google-published source. Where the paper prescribes principles (specs first, tests as the contract with the AI, a versioned and human-owned harness, risk-appropriate model routing), AIDSEF ships the machinery that enforces them.
+
 ### Objection handling
 
 - *"AI code is slop"* → the red proof, cross-model review, structured findings, and human gates on everything high-risk.

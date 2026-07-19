@@ -13,6 +13,9 @@ A short document recording one significant technical decision: what was decided,
 ### Agent
 An AI worker given a specific job, a set of tools, and written limits. AIDSEF uses nine of them (Analyst, Architect, Planner, Test Engineer, Coder, Reviewer, Arbiter, Retro, Doc writer), each defined by a [charter](#charter).
 
+### Agentic engineering
+The industry's name for the disciplined end of AI-assisted development: AI writes the code, but inside human-designed specs, tests, gates, and review. Coined as the counterpart to casual "vibe coding" — and it is exactly what AIDSEF operationalizes. See Google's whitepaper [*The New SDLC with Vibe Coding*](https://www.kaggle.com/whitepaper-the-new-SDLC-with-vibe-coding) (Osmani, Saboo & Kartakis, May 2026).
+
 ### Apache 2.0 license
 A permissive open-source license: software under it can be used, modified, and sold commercially for free. The local model AIDSEF uses (Qwen3.6) carries this license.
 
@@ -169,11 +172,17 @@ The High / Standard / Low label that says how dangerous a change could be, and t
 ### Self-hosted runner
 Your own machine doing the work for GitHub Actions instead of GitHub's cloud computers. Minutes on your own hardware are always free.
 
+### Slopsquatting
+An attack that exploits AI coding mistakes: models sometimes invent plausible-sounding package names, and attackers publish malicious code under exactly those names, waiting for generated software to install it. AIDSEF's Reviewer checks every new dependency against its real registry, and adding any new dependency is automatically [risk](#risk-tier)-High.
+
 ### Smoke test
 The simplest possible end-to-end check that a system is alive and wired correctly — named for "plug it in and see if smoke comes out."
 
 ### Spec (specification)
 The written statement of *what* to build and how you'll know it's done, before any code exists. AIDSEF specs live in `specs/<feature>/spec.md` with numbered, testable acceptance criteria.
+
+### Spike
+A sanctioned throwaway experiment — code written purely to answer "would this even work?", with no specs, tests, or gates. In AIDSEF, spikes live on `spike/*` [branches](#branch) that the automated checks physically refuse to merge; the learning is written down, and anything worth keeping is rebuilt through the normal lifecycle. The term comes from Extreme Programming's "spike solution."
 
 ### Tailscale
 Software that creates a private, encrypted network between your machines over the internet, as if they were on the same desk. Connects the laptop, Docker server, and Spark.

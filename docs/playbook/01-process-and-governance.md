@@ -40,11 +40,12 @@ Not every change deserves the same level of scrutiny: fixing a typo in the docum
 
 ### 3.1 Change classes
 
-First, what *kind* of work is it? There are three classes:
+First, what *kind* of work is it? There are four classes:
 
 - **Feature** — building something new. Goes through the full lifecycle (Phases 1–6).
 - **Fix** — repairing something broken. Abbreviated path: report the problem → write a test that reproduces the bug (so it can never sneak back) → fix it → review → merge. No new spec is written; the fix links back to the spec it corrects.
 - **Chore** — housekeeping: updating [dependencies](../glossary.md#dependency) (the third-party code your project builds on), documentation, or tooling. Skips Phases 1–3.
+- **[Spike](../glossary.md#spike)** — a sanctioned throwaway experiment. Sometimes the fastest way to answer "would this even work?" is to just try it, with no specs and no tests. Spikes make that legitimate *inside* the framework instead of a workaround: they live on branches named `spike/…`, skip every checkpoint — and in exchange can never merge into the real codebase (the automated checks physically refuse any pull request from a spike branch). What the spike taught you gets written down; anything worth keeping is rebuilt properly through the normal lifecycle. Spikes carry no risk tier, because the tier system exists to govern what merges — and spikes don't.
 
 ### 3.2 Risk tiers (defaults; adjust yours in the constitution)
 
@@ -64,7 +65,7 @@ First, what *kind* of work is it? There are three classes:
 
 The Planner agent proposes each item's risk tier and stamps it on the work item as a [label](../glossary.md#label). **You can overrule it with one click** — change the label, and the tier changes. Raising anything to High immediately re-arms every human checkpoint for it.
 
-> **Software Engineering Validation:** Conventional change-management risk classification mapped onto phase-gate governance. Triggers for High are the usual suspects — auth/authz, payments, PII and schema migrations, public API contracts, security/infra config, new third-party dependencies, >400 changed LOC. Tier assignment is Planner-proposed and human-overridable via a single label change; re-tiering to High re-arms all human gates for that item. Gate enforcement is mechanical where GitHub allows it — branch protection with required status checks — not procedural. Tune the triggers per-project in `constitution.md`.
+> **Software Engineering Validation:** Conventional change-management risk classification mapped onto phase-gate governance. Triggers for High are the usual suspects — auth/authz, payments, PII and schema migrations, public API contracts, security/infra config, new third-party dependencies, >400 changed LOC. Tier assignment is Planner-proposed and human-overridable via a single label change; re-tiering to High re-arms all human gates for that item. Gate enforcement is mechanical where GitHub allows it — branch protection with required status checks — not procedural. Tune the triggers per-project in `constitution.md`. The Spike class is XP's "spike solution" made mechanical: exploration code is unreviewable by design, so a CI guard on `spike/*` head branches bars it from `main` outright — the explicit prototype/production boundary that keeps prototypes from shipping by accident.
 
 ## 4. Operating profiles
 
