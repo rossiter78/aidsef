@@ -46,18 +46,29 @@ jobs:
           fi
 
       - name: Traceability matrix (every acceptance criterion covered by a test)
-        # Fail closed for Feature/Fix-class changes (issue #12): if the
-        # diff touches product code (src/**), a spec with AC IDs must
-        # exist. Chore/docs diffs keep the pass-on-empty behavior.
+        # One rule: traceability is enforced wherever code moves. The diff
+        # picks the mode:
+        #   - touches src/**  -> --require-specs: product code (Feature/Fix
+        #     class) must have a spec with AC IDs, or the gate is a silent
+        #     no-op for the changes it most needs to guard (issue #12).
+        #   - touches neither src/** nor tests/** -> --allow-uncovered: a
+        #     spec-only change carries criteria whose tests arrive in Phase 4,
+        #     so they are pending, not failures - this is what lets a Phase 1
+        #     spec gate merge (issue #18).
+        #   - touches tests/** but not src/**, or base unverifiable -> the
+        #     strict default (every claimed criterion must be covered).
         run: |
           BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
-          REQUIRE=()
+          FLAGS=()
           if [[ -n "$BASE" ]] && git rev-parse -q --verify "$BASE^{commit}" >/dev/null 2>&1; then
-            if git diff --name-only "$(git merge-base "$BASE" HEAD)" HEAD | grep -qE '^src/'; then
-              REQUIRE=(--require-specs)
+            CHANGED="$(git diff --name-only "$(git merge-base "$BASE" HEAD)" HEAD)"
+            if grep -qE '^src/' <<< "$CHANGED"; then
+              FLAGS=(--require-specs)
+            elif ! grep -qE '^(src|tests)/' <<< "$CHANGED"; then
+              FLAGS=(--allow-uncovered)
             fi
           fi
-          python3 tools/check_traceability.py ${REQUIRE[@]+"${REQUIRE[@]}"}
+          python3 tools/check_traceability.py ${FLAGS[@]+"${FLAGS[@]}"}
 
       - name: Upload generated traceability matrices
         if: always()
