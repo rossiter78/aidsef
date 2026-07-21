@@ -20,7 +20,7 @@ The trap we fell into first: this was written up as a `spec.md` with **17 number
 
 **Treat framework process / folder-structure / documentation changes as ADR-level decisions, not spec-with-testable-acceptance-criteria features.** Record the decision and what shipped in an ADR, make the edits, and verify with **one human doc-consistency review** — not the spec → AC → TDD → traceability lifecycle, which exists for product code.
 
-Under that scope, this change ships exactly two goals:
+Under that scope, the decided work is exactly two goals — this ADR and the structural revert land first; the two goals follow in a small implementation PR:
 
 1. **`project/inputs/` — an intake folder the lifecycle reads by default.** The human drops pre-existing material there. The Analyst reads it before interviewing (Phase 1) and the Architect reads it during design (Phase 2); the produced `spec.md` and `design.md` each carry a **Sources** section listing what they drew on. The governing rule, stated in `project/inputs/README.md` and in the Analyst and Architect charters: **the merged spec wins; inputs are historical once absorbed** — no agent ever modifies an input document.
 
