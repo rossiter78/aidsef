@@ -8,6 +8,15 @@ These ideas aren't ours alone. Google's May 2026 whitepaper [*The New SDLC with 
 
 **Status:** setup phases A–C complete (2026-07-19). The scaffold is built, the local model plane is live (tool-calling smoke test: 10/10 clean runs), and the guardrails survived deliberate attack on the [machinery test bench](https://github.com/rossiter78/aidsef-scratch) — including the reviewer catching a real defect in the template's own traceability gate ([#12](https://github.com/rossiter78/aidsef/issues/12)). Next: Phase D, the first dogfood project.
 
+## Start your project
+
+Four steps take you from this template to a project that's building software — the last one hands off to a setup wizard that does the rest.
+
+1. **Use this template.** On this repo's GitHub page, click **Use this template → Create a new repository**, name it after your project, and choose Private or Public. This makes a fresh copy with its own history — do *not* `git clone` the template itself.
+2. **Clone your new repo:** `git clone https://github.com/YOUR-USER/YOUR-PROJECT.git`
+3. **Open it in Claude Code** (or VS Code with Claude Code).
+4. **Run `/aidsef-begin`.** The one-time setup wizard interviews you, clears out the framework's own build files, drafts your project's `README` and rules, walks you through two quick browser settings, and opens a single setup pull request — approving it adopts your rulebook, and you're ready to build with `/aidsef-1-spec`.
+
 ## The playbook
 
 1. [Process flow & governance](docs/playbook/01-process-and-governance.md) — the lifecycle, risk-based human checkpoints, solo/team profiles, and the self-improvement loop
