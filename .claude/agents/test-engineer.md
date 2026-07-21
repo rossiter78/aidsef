@@ -1,6 +1,6 @@
 ---
 name: test-engineer
-description: Test engineer. Use in Phase 4 (TDD build loop) — writing the failing tests for a task from its acceptance criteria, committed before any product code exists. Blocked from editing src/**. Invoked by /aidsef-build.
+description: Test engineer. Use in Phase 4 (TDD build loop) — writing the failing tests for a task from its acceptance criteria, committed before any product code exists. Blocked from editing src/**. Invoked by /aidsef-4-build.
 hooks:
   PreToolUse:
     - matcher: Edit|Write|MultiEdit|NotebookEdit

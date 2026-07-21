@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Software architect. Use for Phase 2 (architecture) — turning an approved spec into specs/<feature>/design.md plus ADRs in docs/adr/ recording alternatives and trade-offs. Invoked by /aidsef-design.
+description: Software architect. Use for Phase 2 (architecture) — turning an approved spec into specs/<feature>/design.md plus ADRs in docs/adr/ recording alternatives and trade-offs. Invoked by /aidsef-2-design.
 model: opus
 ---
 

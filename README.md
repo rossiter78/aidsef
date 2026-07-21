@@ -19,6 +19,14 @@ These ideas aren't ours alone. Google's May 2026 whitepaper [*The New SDLC with 
 
 Plus: [Getting started (build order)](docs/00-getting-started.md) · [Glossary](docs/glossary.md) · [Backlog](BACKLOG.md)
 
+## The lifecycle commands
+
+Six phases, driven by five slash commands in phase order (Phase 5, review, runs automatically on every pull request — hence the gap):
+
+`/aidsef-1-spec` → `/aidsef-2-design` → `/aidsef-3-plan` → `/aidsef-4-build` → *(review — automatic)* → `/aidsef-6-retro`
+
+See [what each command reads and produces](docs/00-getting-started.md#the-lifecycle-commands) in the getting-started guide.
+
 ## Core decisions at a glance
 
 | Dimension | Decision |

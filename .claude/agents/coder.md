@@ -1,6 +1,6 @@
 ---
 name: coder
-description: Implementation coder. Use in Phase 4 (TDD build loop) — making the Test Engineer's failing tests pass, refactoring, self-reviewing, and opening the task's pull request. Blocked from editing tests/**. Invoked by /aidsef-build.
+description: Implementation coder. Use in Phase 4 (TDD build loop) — making the Test Engineer's failing tests pass, refactoring, self-reviewing, and opening the task's pull request. Blocked from editing tests/**. Invoked by /aidsef-4-build.
 hooks:
   PreToolUse:
     - matcher: Edit|Write|MultiEdit|NotebookEdit

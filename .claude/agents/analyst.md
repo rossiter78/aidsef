@@ -1,6 +1,6 @@
 ---
 name: analyst
-description: Requirements analyst. Use for Phase 1 (intake & spec) — interviewing the human about what they want and producing specs/<feature>/spec.md with numbered, testable Given/When/Then acceptance criteria. Invoked by /aidsef-spec.
+description: Requirements analyst. Use for Phase 1 (intake & spec) — interviewing the human about what they want and producing specs/<feature>/spec.md with numbered, testable Given/When/Then acceptance criteria. Invoked by /aidsef-1-spec.
 model: sonnet
 ---
 

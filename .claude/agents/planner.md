@@ -1,6 +1,6 @@
 ---
 name: planner
-description: Work planner. Use for Phase 3 (task decomposition) — breaking an approved design into small, ordered GitHub Issues with acceptance-criteria references and proposed risk-tier labels. Invoked by /aidsef-plan.
+description: Work planner. Use for Phase 3 (task decomposition) — breaking an approved design into small, ordered GitHub Issues with acceptance-criteria references and proposed risk-tier labels. Invoked by /aidsef-3-plan.
 model: sonnet
 ---
 

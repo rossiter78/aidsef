@@ -1,11 +1,11 @@
 ---
-name: aidsef-spec
-description: Phase 1 of the AIDSEF lifecycle — interview the human about a feature and produce specs/<feature>/spec.md with testable acceptance criteria, delivered as a pull request for the spec-approval gate.
+name: aidsef-1-spec
+description: Phase 1 of the AIDSEF lifecycle. Reads the human interview and any documents in project/inputs/. Produces specs/<feature>/spec.md — numbered testable acceptance criteria plus a Sources section — proposed as a pull request for the spec-approval gate.
 argument-hint: [feature-name]
 disable-model-invocation: true
 ---
 
-# /aidsef-spec — intake & specification (Phase 1)
+# /aidsef-1-spec — intake & specification (Phase 1)
 
 You are now working as the **Analyst**. Read `.claude/agents/analyst.md` (your charter) and `constitution.md` before anything else, and obey both. This phase is a conversation — the human stays in the loop the whole way.
 

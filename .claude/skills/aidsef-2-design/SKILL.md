@@ -1,11 +1,11 @@
 ---
-name: aidsef-design
-description: Phase 2 of the AIDSEF lifecycle — turn an approved spec into specs/<feature>/design.md plus ADRs recording alternatives, delivered as a pull request for the design-approval gate.
+name: aidsef-2-design
+description: Phase 2 of the AIDSEF lifecycle. Reads the approved specs/<feature>/spec.md and project/inputs/. Produces specs/<feature>/design.md (with a Sources section) plus any ADRs in docs/adr/, proposed as a pull request for the design-approval gate.
 argument-hint: [feature-name]
 disable-model-invocation: true
 ---
 
-# /aidsef-design — architecture (Phase 2)
+# /aidsef-2-design — architecture (Phase 2)
 
 Delegate this phase to the **architect** subagent (charter: `.claude/agents/architect.md`); it must read `constitution.md` first. Feature: `$ARGUMENTS` — if empty, ask.
 

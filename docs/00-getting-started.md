@@ -9,7 +9,7 @@ Build the template repository — the starter kit every AIDSEF project will be c
 1. 👤 Create the GitHub repository `aidsef` (public — open-core) and connect this directory to it (`git init`).
 2. Write `constitution.md` — the project rulebook — from playbook §1 defaults (risk tiers, gate policy, coverage 80/90, autonomy level 0, solo profile).
 3. Write the 9 role charters (agent job descriptions) in `.claude/agents/` from playbook §2: mission, inputs, outputs, hard limits, model alias.
-4. Write the skills — reusable commands that drive each lifecycle phase: `/aidsef-spec`, `/aidsef-design`, `/aidsef-plan`, `/aidsef-build`, `/aidsef-retro` — each using the matching charter. (Hyphenated, not colon-namespaced: in Claude Code, a project skill's command name comes from its directory name, and colons are reserved for plugin namespaces.)
+4. Write the skills — reusable commands that drive each lifecycle phase: `/aidsef-1-spec`, `/aidsef-2-design`, `/aidsef-3-plan`, `/aidsef-4-build`, `/aidsef-6-retro` — each using the matching charter. (Hyphenated, not colon-namespaced: in Claude Code, a project skill's command name comes from its directory name, and colons are reserved for plugin namespaces.)
 5. Write the hooks (rules that physically block agents from forbidden edits) in `.claude/settings.json`: Coder blocked from `tests/**`, Test Engineer blocked from `src/**`, tests auto-run after edits.
 6. Write the automated workflows: `ci.yml` (tests + coverage + traceability check), `red-proof.yml`, `claude-review.yml`, `claude-fix.yml`, `resident-*.yml` (shipped disabled).
 7. Write the issue/PR templates and a `setup-repo` script (labels: `risk:*`, `needs-human`, `ready`; branch protection; Projects board).
@@ -60,9 +60,24 @@ Use AIDSEF to build something real — "dogfooding" means using your own product
 7. **Run `bash scripts/setup-repo.sh`** from the repo folder (an agent can do this for you): creates the labels, the Projects board, and branch protection. On a Free-plan private repo the branch-protection calls will warn instead of succeed — that's the known advisory-gates trade-off, not an error.
 8. **Open the first pull request** (`chore` class): the trim from step 4 plus the new files from step 5, on a branch, through a PR. Even setup lands via pull request — the audit trail starts at commit one.
 9. **Ratify the constitution — this is Phase 0, and merging the PR *is* the ratification.** Open `constitution.md`; fill in the ratification block at the top (project name, your name, today's date — the solo profile and autonomy level 0 defaults are already correct for a first project); tune the §3–§6 tables only if your project needs different thresholds; add any project-specific law (for example, data-handling rules or product scope caps). Land it as its own PR and approve it. **Your approval of that PR is the ratification ceremony — there is nothing else to do.**
-10. **Run the full lifecycle at autonomy Level 0** — watch everything: `/aidsef-spec` conversation → approve the spec PR → `/aidsef-design` → approve → `/aidsef-plan` → `/aidsef-build` task by task → review/triage → merge. **Having a pre-written plan document does not skip these phases:** the traceability gate requires a spec with numbered `AC-###` criteria before product code can merge, so `/aidsef-spec` always runs. A good plan makes the conversations *short* — the Analyst starts from your plan instead of a blank page — but the spec still gets written and approved. **Put any pre-existing plans, research, or draft specs in `project/inputs/` before you start** — the Analyst and Architect read that folder automatically at the start of Phases 1 and 2, and cite what they used; your originals are never modified.
-11. After the first feature: run `/aidsef-retro`; approve (or reject) its first amendment PR.
+10. **Run the full lifecycle at autonomy Level 0** — watch everything: `/aidsef-1-spec` conversation → approve the spec PR → `/aidsef-2-design` → approve → `/aidsef-3-plan` → `/aidsef-4-build` task by task → review/triage → merge. **Having a pre-written plan document does not skip these phases:** the traceability gate requires a spec with numbered `AC-###` criteria before product code can merge, so `/aidsef-1-spec` always runs. A good plan makes the conversations *short* — the Analyst starts from your plan instead of a blank page — but the spec still gets written and approved. **Put any pre-existing plans, research, or draft specs in `project/inputs/` before you start** — the Analyst and Architect read that folder automatically at the start of Phases 1 and 2, and cite what they used; your originals are never modified.
+11. After the first feature: run `/aidsef-6-retro`; approve (or reject) its first amendment PR.
 12. Weeks 2–3: move to Level 1 (attended). Level 2 (resident, on the Docker server) only when the retros say the loop has earned it.
+
+### The lifecycle commands
+
+Six phases, five commands — the number in each command name is its phase, so the slash-command menu reads in order. Here is what each one reads and produces:
+
+| Phase | Command | Reads (inputs) | Produces (outputs) |
+|---|---|---|---|
+| 1 · Spec | `/aidsef-1-spec` | your interview answers + anything in `project/inputs/` | `specs/<feature>/spec.md` (acceptance criteria + Sources), proposed via a pull request |
+| 2 · Design | `/aidsef-2-design` | the approved `spec.md` + `project/inputs/` | `specs/<feature>/design.md` + any ADRs in `docs/adr/`, via a pull request |
+| 3 · Plan | `/aidsef-3-plan` | the approved `design.md` | a set of ordered GitHub task issues (no file, no PR) |
+| 4 · Build | `/aidsef-4-build <issue>` | one `ready` task issue | failing `tests/**` first, then `src/**` + the traceability matrix, via a pull request |
+| 5 · Review | *(automatic on every PR)* | the pull request | AI review findings + Arbiter triage comments |
+| 6 · Retro | `/aidsef-6-retro` | the completed feature's history | `retros/<feature>.md` via a pull request, plus any human-approved amendment PRs |
+
+**Phase 5 has no command** — review runs automatically on every pull request, which is why the numbering skips from `4` to `6`.
 
 ## Trust milestones (when to turn the autonomy dial)
 
