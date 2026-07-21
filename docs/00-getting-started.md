@@ -49,7 +49,7 @@ Before trusting the guardrails, deliberately try to break them (in a scratch rep
 
 ## Phase D — Dogfood project #1
 
-Use AIDSEF to build something real — "dogfooding" means using your own product for your own needs. Steps 2–9 are the standard setup for **any** project cloned from the template; do them in this order, because the later ones depend on the earlier ones. (Backlog: a `/aidsef-begin` skill will automate steps 4–9.)
+Use AIDSEF to build something real — "dogfooding" means using your own product for your own needs. Steps 2–9 are the standard setup for **any** project cloned from the template; do them in this order, because the later ones depend on the earlier ones. **Steps 4–9 are now automated by the [`/aidsef-begin`](../.claude/skills/aidsef-begin/SKILL.md) wizard — run it and it does them for you.** They are still written out below so you (and framework maintainers) can see exactly what it does.
 
 1. 👤 Pick a small real app you actually want (internal-tool-sized; it doubles as your first case study).
 2. 👤 **Create the project repository from the template button.** On the [aidsef repo page](https://github.com/rossiter78/aidsef), click **Use this template → Create a new repository**; name it after your project; choose Private or Public (private on a Free plan makes the merge gates advisory rather than physically blocking — see playbook §5.3). This copies the files into a brand-new repository with a fresh history and **no link back to the template**. Do *not* `git clone` the template itself — that would drag along AIDSEF's own history and remote.
