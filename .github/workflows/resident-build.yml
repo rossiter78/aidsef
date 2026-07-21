@@ -53,5 +53,5 @@ jobs:
             echo "No ready tasks - nothing to do."
             exit 0
           fi
-          echo "Building task #$ISSUE via /aidsef-build (headless)..."
-          claude -p "/aidsef-build $ISSUE" --permission-mode acceptEdits
+          echo "Building task #$ISSUE via /aidsef-4-build (headless)..."
+          claude -p "/aidsef-4-build $ISSUE" --permission-mode acceptEdits

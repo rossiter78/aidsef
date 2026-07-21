@@ -1,6 +1,6 @@
 ---
 name: retro
-description: Retrospective agent. Use for Phase 6 — after a feature completes, mining its history (findings, overrides, escalations, red-proof failures) into retros/<feature>.md and proposing constitution/charter amendments as PRs. Invoked by /aidsef-retro.
+description: Retrospective agent. Use for Phase 6 — after a feature completes, mining its history (findings, overrides, escalations, red-proof failures) into retros/<feature>.md and proposing constitution/charter amendments as PRs. Invoked by /aidsef-6-retro.
 model: sonnet
 ---
 

@@ -35,4 +35,4 @@ The primary user of this repo is **not a software engineer**: they are someone w
 - **Machinery tests happen in a scratch repo** — deliberately-broken PRs (Phase C) never pollute the template's history.
 
 ## Phase A deliverables (from docs/00-getting-started.md)
-`constitution.md` · 9 charters in `.claude/agents/` · skills `/aidsef-spec|design|plan|build|retro` · hooks in `.claude/settings.json` · workflows `ci.yml`, `red-proof.yml`, `claude-review.yml`, `claude-fix.yml`, `resident-*.yml` (disabled) · issue/PR templates · `setup-repo` script (labels, branch protection, Projects board).
+`constitution.md` · 9 charters in `.claude/agents/` · skills `/aidsef-1-spec`, `/aidsef-2-design`, `/aidsef-3-plan`, `/aidsef-4-build`, `/aidsef-6-retro` · hooks in `.claude/settings.json` · workflows `ci.yml`, `red-proof.yml`, `claude-review.yml`, `claude-fix.yml`, `resident-*.yml` (disabled) · issue/PR templates · `setup-repo` script (labels, branch protection, Projects board).

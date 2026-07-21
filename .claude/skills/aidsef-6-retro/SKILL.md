@@ -1,11 +1,11 @@
 ---
-name: aidsef-retro
-description: Phase 6 of the AIDSEF lifecycle — after a feature completes, mine its history into retros/<feature>.md and, when patterns warrant, propose constitution or charter amendments as human-approved pull requests.
+name: aidsef-6-retro
+description: Phase 6 of the AIDSEF lifecycle. Reads a completed feature's history (findings, overrides, escalations, red-proof failures, coverage/mutation trends). Produces retros/<feature>.md via a pull request, and — only when a pattern recurs — separate human-approved amendment PRs to the constitution or a charter.
 argument-hint: [feature-name]
 disable-model-invocation: true
 ---
 
-# /aidsef-retro — retrospective (Phase 6)
+# /aidsef-6-retro — retrospective (Phase 6)
 
 Delegate this phase to the **retro** subagent (charter: `.claude/agents/retro.md`); it must read `constitution.md` first. Feature: `$ARGUMENTS` — if empty, ask.
 

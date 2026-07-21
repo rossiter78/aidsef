@@ -1,11 +1,11 @@
 ---
-name: aidsef-plan
-description: Phase 3 of the AIDSEF lifecycle — break an approved design into small, ordered GitHub Issues with acceptance-criteria references and proposed risk-tier labels.
+name: aidsef-3-plan
+description: Phase 3 of the AIDSEF lifecycle. Reads the approved specs/<feature>/design.md. Produces a set of small, ordered GitHub task issues, each citing the AC-* it covers and a proposed risk-tier label (no pull request — the output is issues).
 argument-hint: [feature-name]
 disable-model-invocation: true
 ---
 
-# /aidsef-plan — task decomposition (Phase 3)
+# /aidsef-3-plan — task decomposition (Phase 3)
 
 Delegate this phase to the **planner** subagent (charter: `.claude/agents/planner.md`); it must read `constitution.md` first. Feature: `$ARGUMENTS` — if empty, ask.
 

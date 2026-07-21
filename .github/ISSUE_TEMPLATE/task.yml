@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         One task ≈ one branch ≈ one pull request. Keep it small (ideally under ~200 changed lines).
-        Build it with `/aidsef-build <this issue number>`.
+        Build it with `/aidsef-4-build <this issue number>`.
   - type: input
     id: feature
     attributes:

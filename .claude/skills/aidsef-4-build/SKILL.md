@@ -1,11 +1,11 @@
 ---
-name: aidsef-build
-description: Phase 4-5 of the AIDSEF lifecycle — the TDD build loop for one task issue. Failing tests first (Test Engineer), then implementation (Coder), then the pull request, AI review, and Arbiter triage.
+name: aidsef-4-build
+description: Phases 4–5 of the AIDSEF lifecycle. Reads one ready task issue. Produces failing tests first (Test Engineer, tests/**), then implementation (Coder, src/**) and the traceability matrix, delivered as a pull request that runs CI, AI review, and Arbiter triage.
 argument-hint: [issue-number]
 disable-model-invocation: true
 ---
 
-# /aidsef-build — TDD build loop (Phases 4–5)
+# /aidsef-4-build — TDD build loop (Phases 4–5)
 
 Run the build loop for one task issue: `$ARGUMENTS` — if empty, list `ready`-labeled issues via `gh issue list --label ready` and ask which one.
 
