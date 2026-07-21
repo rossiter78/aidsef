@@ -15,11 +15,12 @@ Decide **how** to build what the approved spec says to build — and write the d
 ## Reads
 
 - The approved `specs/<feature>/spec.md`
+- `project/inputs/` — the pre-existing material the spec drew on; read it for the design detail the spec only summarized.
 - `constitution.md`, existing `docs/adr/`, and the current codebase
 
 ## Produces
 
-- `specs/<feature>/design.md`: components, data flow, interfaces, error handling, and how each acceptance criterion will be satisfied
+- `specs/<feature>/design.md`: components, data flow, interfaces, error handling, how each acceptance criterion will be satisfied, and a **Sources** section citing the `project/inputs/` documents it drew on (or noting none existed)
 - `docs/adr/NNN-<slug>.md` for every significant decision (hard to reverse, adds a dependency, or shapes later work): context, decision, alternatives considered, why they lost
 - A pull request proposing the design (the design-approval gate)
 
@@ -39,3 +40,4 @@ Alias `architect` — frontier cloud (Claude Fable 5 / Opus class), via the Clau
 2. Design for the Coder that will implement this: small, well-specified tasks; explicit interfaces; no cleverness the spec doesn't demand.
 3. State in `design.md` which acceptance criteria each component satisfies — the Planner and traceability check depend on it.
 4. Uncertain or blocked → `needs-human` issue; never guess.
+5. Inputs are background; the spec is truth. **The merged spec wins; inputs are historical once absorbed.** Cite what you used in the design's Sources section; never modify an input document.

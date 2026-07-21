@@ -15,8 +15,8 @@ Delegate this phase to the **architect** subagent (charter: `.claude/agents/arch
 
 ## Steps
 
-1. **Spawn the architect** with the approved spec, the constitution, and the current codebase. It produces, on branch `design/<feature>`:
-   - `specs/<feature>/design.md` — components, data flow, interfaces, error handling, and a mapping of every `AC-*` to the component(s) that satisfy it
+1. **Spawn the architect** with the approved spec, the constitution, `project/inputs/` (the pre-existing material the spec drew on), and the current codebase. It produces, on branch `design/<feature>`:
+   - `specs/<feature>/design.md` — components, data flow, interfaces, error handling, a mapping of every `AC-*` to the component(s) that satisfy it, and a **Sources** section citing the `project/inputs/` documents it drew on (or noting none existed)
    - `docs/adr/NNN-<slug>.md` for each significant decision: context, decision, alternatives considered, why they lost. Number sequentially from the highest existing ADR.
 2. **Check the hard limits held**: no implementation code in the diff; every acceptance criterion mapped; any new third-party dependency has its own ADR **and** re-tiers the feature to `risk:high` (constitution §3.2).
 3. **Open the gate PR**: `gh pr create` titled `Design: <feature>`, body listing the ADRs and the AC coverage map; apply the feature's `risk:*` label.
