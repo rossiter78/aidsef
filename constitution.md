@@ -2,19 +2,16 @@
 
 The project rulebook: the engineering rules that are **not up for debate mid-project**. Every [agent](docs/glossary.md#agent) reads this document at the start of every task. Humans ratify it once, at project start; after that it changes only through a human-approved [pull request](docs/glossary.md#pull-request-pr) (see [§8 Amendments](#8-amendments)).
 
-This file ships with the AIDSEF template as a ready-to-ratify default. Cloning a new project? Read it, tune the tables in §3–§6 if your project needs different thresholds, fill in the ratification block, and approve the PR that adds it. That approval **is** Phase 0 of the [lifecycle](docs/playbook/01-process-and-governance.md).
+This file ships with the AIDSEF template as a ready-to-ratify default. Cloning a new project? Read it, tune the tables in §3–§6 if your project needs different thresholds, confirm the operating profile (solo is the default), and approve the PR that adds it. That approval **is** Phase 0 of the [lifecycle](docs/playbook/01-process-and-governance.md).
 
 > **Software Engineering Validation:** This is a working agreement + engineering standards doc, versioned as code. Every agent receives it as context on every task; every change to it is a reviewed PR. The defaults below implement mechanically-enforced TDD, risk-tiered change control, and structured review triage as specified in the [playbook](docs/playbook/01-process-and-governance.md).
 
-## Ratification
+## Project settings
 
-| Field | Value |
-|---|---|
-| Project | *(project name — fill in when cloning)* |
-| Ratified by | *(your name)* |
-| Date | *(YYYY-MM-DD)* |
-| Operating profile | **Solo** (see §5) |
-| Autonomy level | **0 — Watched** (see §6) |
+- **Operating profile: Solo** — one person wears all the hats (see §5). Moving to a team profile is an amendment (§8).
+- **Autonomy level:** how much the AI does without you watching. It lives in **one** place — the `AIDSEF_AUTONOMY_LEVEL` variable in the repository's GitHub settings, **not** in this file — so there is only ever one switch to check. It starts at **0 — Watched**; see §6 for what the levels mean and when to raise it.
+
+*(Who adopted this rulebook, and when, is recorded automatically by Git when the pull request that adds it is approved and merged — core rule 6. That approval is Phase 0; there is no form to fill in.)*
 
 ---
 
@@ -83,7 +80,7 @@ Switching to the **team profile** is an amendment (§8): assign an approver of r
 
 ## 6. Autonomy level
 
-This project runs at [autonomy level](docs/glossary.md#autonomy-level) **0 — Watched**: the build loop runs in an interactive session you observe. The dial moves only by amendment (§8), and only when the trust milestones are met:
+This project starts at [autonomy level](docs/glossary.md#autonomy-level) **0 — Watched**: the build loop runs in an interactive session you observe. The level lives in one place — the `AIDSEF_AUTONOMY_LEVEL` variable in the repository's GitHub settings, which the resident-runner workflow reads. Only a human changes it, and only when the trust milestones are met:
 
 - **0 → 1 (Attended):** two consecutive features with zero red-proof failures and no surprise triage overrides.
 - **1 → 2 (Resident):** escalation rate below 1 per 10 tasks, and you've stopped reading standard-tier changes line-by-line and started sampling them.
