@@ -15,7 +15,11 @@ Project name (used in the drafts and the PR title): `$ARGUMENTS` — if empty, a
 
 ## Before this runs (the README covers these)
 
-These happen *before* the skill can exist locally, so the template's `README.md` walks a new user through them: (1) on the template's GitHub page, **Use this template → Create a new repository**; (2) `git clone` the new repo and open it in Claude Code. **Guard:** if this folder *is* the AIDSEF template itself (its `origin` remote points at the `aidsef` template repo), stop and say so — `/aidsef-begin` is for a fresh project copy, not the template.
+These happen *before* the skill can exist locally, so the template's `README.md` walks a new user through them: (1) on the template's GitHub page, **Use this template → Create a new repository**; (2) `git clone` the new repo and open it in Claude Code.
+
+> **Safe when you're building *with* AIDSEF — not when you're building AIDSEF itself.** This wizard clears out the framework's own files to make room for your project. That's exactly right inside a fresh project you created from the template, and exactly wrong inside the AIDSEF template repo where the framework itself is developed.
+
+**Stop-check — do this first, before touching anything.** Run `git remote get-url origin`. If it points at the AIDSEF template itself (its path ends in `/aidsef` or `/aidsef.git`), **stop immediately**, change nothing, and tell the human this looks like the AIDSEF template, not a new project — `/aidsef-begin` is only for a fresh copy made with **Use this template**. (Even if this check is somehow passed by mistake, step 2's confirmation is the second line of defence, and nothing is ever deleted from `main` — the work lands on a branch for you to approve.)
 
 ## Steps
 
@@ -26,7 +30,7 @@ These happen *before* the skill can exist locally, so the template's `README.md`
    - Solo or team? (Solo is the default, and right for a first project.)
    - Any quality-threshold changes? (Default: keep the constitution's defaults.)
 
-2. **Clean out the framework-authoring files** — they document how AIDSEF *itself* was built and don't belong in your project. Delete:
+2. **Clean out the framework-authoring files** — they document how AIDSEF *itself* was built and don't belong in your project. **Confirm before removing anything:** tell the human which repository you're in (from the stop-check above) and show the exact list below, then ask them to confirm this is their new project and it's OK to proceed. Only after a clear yes, delete:
    - `docs/playbook/` (the whole folder)
    - `docs/00-getting-started.md` (the framework build-order guide)
    - the framework's own decision records: every `docs/adr/NNN-*.md` file — **keep `docs/adr/README.md`**, because your project writes its *own* ADRs here, starting fresh at `001`

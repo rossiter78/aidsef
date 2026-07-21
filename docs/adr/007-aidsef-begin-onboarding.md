@@ -26,6 +26,8 @@ Settled design points:
 
 - **The browser steps are a hard hand-off.** Adding the `CLAUDE_CODE_OAUTH_TOKEN` secret and granting the GitHub App access are actions only the human can take (and that an agent must never attempt). The skill pauses, gives links, and waits for confirmation — and does so *before* opening the PR, so review works on the first PR.
 
+- **Accidental-run safeguard: guard + confirm, not archive.** Because the wizard removes framework-authoring files, firing it by mistake inside the AIDSEF template itself would trash them. The safeguard is a **stop-check** (refuse to run if `origin` is the template repo) plus a **pre-delete confirmation** showing the repo and the exact file list. It is deliberately *not* an "archive instead of delete" folder: archiving would drop the framework's own files — playbook, ADRs, old backlog — into every real clone, the exact opposite of the clean-clone goal, and the human would have to delete the archive anyway. Deletion is already fully recoverable: the wizard works on a branch and opens a PR, so nothing leaves `main` without a human's approval, and git history keeps every removed file regardless.
+
 The template's `README.md` carries the pre-wizard steps (Use this template → `git clone` → open in Claude Code → run `/aidsef-begin`), because those happen before the skill can exist locally.
 
 ## Alternatives considered
