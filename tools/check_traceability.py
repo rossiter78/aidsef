@@ -24,6 +24,16 @@ no-op for exactly the changes it most needs to guard (issue #12).
 Without the flag (chore PRs, fresh clones, local runs), an empty
 glob still passes.
 
+With --allow-uncovered, an acceptance criterion that no test yet
+covers is reported as PENDING and the run still passes (issue #18).
+The lifecycle merges a spec at Phase 1 but writes its covering tests
+at Phase 4, so a spec-only pull request carries uncovered criteria by
+design; the strict default would deadlock its gate. The flag forgives
+only pending tests - a malformed spec (no AC IDs at all) stays fatal,
+and the flag does NOT bypass --require-specs. CI sets it when a diff
+touches neither src/** nor tests/**. Matrices are still written, with
+the pending criteria marked **UNCOVERED**, so nothing is hidden.
+
 Note: criterion IDs are matched globally, so keep them unique across
 features (continue numbering rather than restarting at AC-001 per
 feature, or prefix: LOGIN-AC-001).
@@ -72,6 +82,7 @@ def coverage_map():
 def main(argv=None) -> int:
     args = sys.argv[1:] if argv is None else argv
     require_specs = "--require-specs" in args
+    allow_uncovered = "--allow-uncovered" in args
 
     specs = sorted(Path(".").glob(SPEC_GLOB))
     if not specs:
@@ -90,14 +101,18 @@ def main(argv=None) -> int:
         return 0
 
     covered = coverage_map()
-    failures = []
+    # Two kinds of fault, treated differently: a malformed spec (no AC IDs
+    # at all) is a mistake and always fatal; an uncovered criterion is a
+    # test that hasn't been written yet, forgivable under --allow-uncovered.
+    malformed = []
+    uncovered = []
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     for spec in specs:
         feature = spec.parent.name
         criteria = criteria_in_spec(spec)
         if not criteria:
-            failures.append(f"{spec.as_posix()}: no acceptance-criteria IDs (AC-###) found in spec.")
+            malformed.append(f"{spec.as_posix()}: no acceptance-criteria IDs (AC-###) found in spec.")
             continue
 
         lines = [
@@ -114,17 +129,34 @@ def main(argv=None) -> int:
             cell = "<br>".join(f"`{t}`" for t in tests) if tests else "**UNCOVERED**"
             lines.append(f"| `{ac_id}` | {summary} | {cell} |")
             if not tests:
-                failures.append(f"{feature}: {ac_id} has no covering test (annotate a test with 'Covers: {ac_id}').")
+                uncovered.append(f"{feature}: {ac_id} has no covering test (annotate a test with 'Covers: {ac_id}').")
 
         out = OUT_DIR / f"{feature}.md"
         out.write_text("\n".join(lines) + "\n", encoding="utf-8")
         print(f"Traceability: wrote {out.as_posix()} ({len(criteria)} criteria).")
 
-    if failures:
-        print("\nTraceability FAILED - uncovered acceptance criteria:", file=sys.stderr)
-        for failure in failures:
+    if malformed:
+        # A missing AC ID is always fatal - the flag forgives pending tests,
+        # not a spec that can't be traced at all. Show uncovered too for context.
+        print("\nTraceability FAILED - malformed specs (no acceptance-criteria IDs):", file=sys.stderr)
+        for failure in malformed + uncovered:
             print(f"  - {failure}", file=sys.stderr)
         return 1
+
+    if uncovered:
+        if allow_uncovered:
+            print(
+                "\nTraceability: acceptance criteria still pending a covering test "
+                "(allowed for a spec-only change - tests arrive in Phase 4):"
+            )
+            for failure in uncovered:
+                print(f"  - {failure}")
+            return 0
+        print("\nTraceability FAILED - uncovered acceptance criteria:", file=sys.stderr)
+        for failure in uncovered:
+            print(f"  - {failure}", file=sys.stderr)
+        return 1
+
     print("Traceability: every acceptance criterion is covered.")
     return 0
 
