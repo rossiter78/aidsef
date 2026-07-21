@@ -13,11 +13,12 @@ Feature name (kebab-case, used for paths and branches): `$ARGUMENTS` — if empt
 
 ## Steps
 
-1. **Interview the human.** Ask about: the goal and who it serves; what "done" looks like; inputs/outputs; edge cases and failure behavior; what is explicitly out of scope. Several small questions beat one giant form. Continue until every requirement can be phrased testably.
+1. **Read `project/inputs/` first, then interview the human.** The human may have placed prior specs, plans, designs, or research in `project/inputs/`; read it before interviewing and treat it as background, not gospel — it shortens the interview, it does not replace it. Then ask about: the goal and who it serves; what "done" looks like; inputs/outputs; edge cases and failure behavior; what is explicitly out of scope. Several small questions beat one giant form. Continue until every requirement can be phrased testably.
 2. **Draft `specs/<feature>/spec.md`** containing:
    - Plain-language summary (2–4 sentences, non-engineer first)
    - **Acceptance criteria**: numbered `AC-001`, `AC-002`, … each in Given/When/Then form. These IDs are load-bearing — tests will declare `Covers: AC-xxx` and CI fails the feature if any ID goes untested.
    - **Out of scope** list
+   - **Sources**: each `project/inputs/` document the spec drew on, or a line stating none existed
    - **Proposed risk tier** per constitution §3.2, with one line of reasoning
 3. **Review with the human in chat** — walk through each criterion; revise until they confirm. Never invent a requirement the human didn't confirm.
 4. **Open the gate PR** (agents do all Git work; the human never touches a terminal):
